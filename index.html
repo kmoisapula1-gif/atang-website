@@ -1443,9 +1443,12 @@
       const SCALE = 1.2;
       const boxes = [];
       const addBox = (w,h,d,x,y,z) => boxes.push({w,h,d,x,y,z});
-      [-1.8,-0.6,0.6,1.8].forEach(x => addBox(0.15,0.4,4, x,0,0));   // 4 stringers
-      [-1.7,0,1.7].forEach(z => addBox(4,0.05,0.8, 0,0.225,z));      // top deck boards
-      [-1.7,0,1.7].forEach(z => addBox(4,0.05,0.8, 0,-0.225,z));     // bottom deck boards
+      // 3 stringers run front-to-back (Z) and give the pallet its height
+      [-1.85,0,1.85].forEach(x => addBox(0.4,0.5,4.4, x,0,0));
+      // 6 top deck boards run left-to-right (X) across the stringers, small gaps
+      [-2.05,-1.23,-0.41,0.41,1.23,2.05].forEach(z => addBox(4.5,0.14,0.52, 0,0.32,z));
+      // 3 bottom deck boards (front / centre / back)
+      [-2.05,0,2.05].forEach(z => addBox(4.5,0.14,0.52, 0,-0.32,z));
 
       const CORNERS = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
       const FACEDEF = [
