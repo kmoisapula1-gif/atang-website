@@ -117,6 +117,7 @@
     }
     #hero-canvas {
       position: absolute; inset: 0; z-index: 0;
+      width: 100%; height: 100%; display: block;
       transition: opacity 0.1s;
     }
     .hero-grid-overlay {
@@ -1515,6 +1516,7 @@
           draw.push({ pr, s, z:(vv[0][2]+vv[1][2]+vv[2][2]+vv[3][2])/4 });
         }
         draw.sort((a,b) => a.z - b.z);                 // farthest first
+        ctx.globalAlpha = 0.6;                          // sit back as a background element
         for (const d of draw) {
           ctx.beginPath();
           ctx.moveTo(d.pr[0][0], d.pr[0][1]);
@@ -1528,6 +1530,7 @@
           ctx.lineWidth = 0.5;
           ctx.stroke();
         }
+        ctx.globalAlpha = 1;
       }
       requestAnimationFrame(frame);
     })();
