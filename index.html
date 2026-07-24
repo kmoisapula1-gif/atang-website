@@ -806,7 +806,7 @@
     </div>
   </section>
 
-  <!-- ═══ SERVICES ══════════════════════════════════════════════════ -->
+  <!-- ═══ SERVICES (INTERACTIVE MODAL) ══════════════════════════════════════════════════ -->
   <section id="services">
     <div class="wrap">
       <div class="svc-head reveal">
@@ -814,84 +814,45 @@
           <div class="svc-tag">Six Connected Capabilities</div>
           <h2 class="svc-h2">One Lifecycle.<br/>Six Services.</h2>
         </div>
-        <p class="svc-desc">We manage the entire physical journey of a pallet — maximum utility, strict compliance, and optimal material recovery.</p>
+        <p class="svc-desc">Click any service card to view SLAs, capabilities, and operational metrics.</p>
       </div>
-      <div class="svc-grid">
-        <div class="svc-card reveal">
-          <div class="svc-left">
-            <div class="svc-num">01.</div>
-            <div class="svc-name">Asset Recovery &amp; Retrieval</div>
-          </div>
-          <div class="svc-terminal">
-            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
-            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-4481</span></div>
-            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">DEPOT_ZA</span></div>
-            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">COLLECTION EN ROUTE</span></div>
-          </div>
-        </div>
-        <div class="svc-card reveal" style="transition-delay:0.1s">
-          <div class="svc-left">
-            <div class="svc-num">02.</div>
-            <div class="svc-name">Repair &amp; Refurbishment</div>
-          </div>
-          <div class="svc-terminal">
-            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
-            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-2290</span></div>
-            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">REPAIR_HUB</span></div>
-            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">GRADE A CERTIFIED</span></div>
-          </div>
-        </div>
-        <div class="svc-card reveal" style="transition-delay:0.2s">
-          <div class="svc-left">
-            <div class="svc-num">03.</div>
-            <div class="svc-name">Reverse Logistics</div>
-          </div>
-          <div class="svc-terminal">
-            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
-            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-7710</span></div>
-            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">ROUTE_WC</span></div>
-            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">NETWORK OPTIMIZED</span></div>
-          </div>
-        </div>
-        <div class="svc-card reveal" style="transition-delay:0.3s">
-          <div class="svc-left">
-            <div class="svc-num">04.</div>
-            <div class="svc-name">Tracking &amp; Traceability</div>
-          </div>
-          <div class="svc-terminal">
-            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
-            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-0093</span></div>
-            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">HUB_MIDRAND</span></div>
-            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">RFID SCANNED</span></div>
-          </div>
-        </div>
-        <div class="svc-card reveal" style="transition-delay:0.4s">
-          <div class="svc-left">
-            <div class="svc-num">05.</div>
-            <div class="svc-name">Pallet Manufacturing</div>
-          </div>
-          <div class="svc-terminal">
-            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
-            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-5520</span></div>
-            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">MILL_ZA</span></div>
-            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">TIMBER MILLED</span></div>
-          </div>
-        </div>
-        <div class="svc-card reveal" style="transition-delay:0.5s">
-          <div class="svc-left">
-            <div class="svc-num">06.</div>
-            <div class="svc-name">Recycling &amp; Material Recovery</div>
-          </div>
-          <div class="svc-terminal">
-            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
-            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-8834</span></div>
-            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">RECOVERY_CTN</span></div>
-            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">BIOMASS CONVERTED</span></div>
-          </div>
-        </div>
+      <div class="svc-grid" id="svc-grid">
+        <!-- Services populated by JS -->
       </div>
     </div>
   </section>
+
+  <!-- Service Detail Modal / Drawer -->
+  <div id="service-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px)">
+    <div style="position:absolute;top:0;right:0;height:100%;width:100%;max-width:500px;background:var(--forest-dark);color:var(--sand);padding:32px;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.06)">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;background:rgba(200,112,64,0.15);border:1px solid var(--border-light);color:var(--copper);padding:4px 10px;border-radius:4px;text-transform:uppercase" id="modal-srv-id">SRV-01</span>
+        <button onclick="closeServiceModal()" style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--grey);cursor:pointer;background:none;border:none">ESC / CLOSE ✕</button>
+      </div>
+
+      <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:12px" id="modal-srv-title">Asset Recovery</h2>
+      <p style="color:rgba(247,246,242,0.7);font-size:0.95rem;line-height:1.7;margin-bottom:28px" id="modal-srv-summary">Service summary here</p>
+
+      <div style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);padding:16px;border-radius:8px;margin-bottom:20px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Service Level Agreement</span>
+        <p style="font-size:0.95rem;font-weight:600;color:var(--copper-light)" id="modal-srv-sla">SLA here</p>
+      </div>
+
+      <div style="margin-bottom:24px">
+        <h4 style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:rgba(247,246,242,0.5);margin-bottom:12px">Key Capabilities</h4>
+        <ul id="modal-srv-details" style="list-style:none;space-y:8px"></ul>
+      </div>
+
+      <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);padding:16px;border-radius:8px;margin-bottom:32px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:rgba(16,185,129,0.8);display:block;margin-bottom:6px">Operational Output</span>
+        <p style="font-size:0.95rem;font-weight:600;color:#10b981" id="modal-srv-output">Output metric</p>
+      </div>
+
+      <button onclick="scrollToContact()" style="width:100%;padding:12px;background:var(--copper);color:#fff;font-weight:600;border:none;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;text-transform:uppercase;transition:var(--transition)">
+        Request Audit →
+      </button>
+    </div>
+  </div>
 
   <!-- ═══ METRICS ════════════════════════════════════════════════════ -->
   <section id="metrics">
@@ -917,26 +878,77 @@
     </div>
   </section>
 
-  <!-- ═══ LIFECYCLE RING ═════════════════════════════════════════════ -->
-  <section id="lifecycle">
-    <div class="wrap">
+  <!-- ═══ LIFECYCLE RING (INTERACTIVE) ═════════════════════════════════════════════ -->
+  <section id="lifecycle" style="position:relative;overflow:hidden">
+    <canvas id="lifecycle-canvas" style="position:absolute;top:0;left:0;width:100%;height:100%;opacity:0.08"></canvas>
+    <div class="wrap" style="position:relative;z-index:2">
       <div class="lifecycle-center reveal">
         <div class="section-tag">The Recovery Cycle</div>
         <h2 class="lifecycle-h2">A closed-loop system</h2>
         <p style="color:var(--grey);margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.8;font-size:1.02rem">
-          Assets stay in circulation, visible at every stage — nothing leaves the cycle unaccounted for.
+          Hover over any stage to see operational metrics, timeline, and environmental impact.
         </p>
       </div>
-      <div class="ring-wrap" id="ringWrap">
-        <svg class="ring-svg" viewBox="0 0 460 460">
-          <circle class="ring-bg-circle" cx="230" cy="230" r="210"/>
-          <circle class="ring-arc" id="ringArc" cx="230" cy="230" r="210"/>
-        </svg>
-        <div class="ring-center">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
-            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
-            <path d="M3.3 7l8.7 5 8.7-5M12 22V12"/>
-          </svg>
+
+      <!-- Interactive Node Grid -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin:60px 0;max-width:100%">
+        <button class="lifecycle-node" data-id="recover" style="grid-column:span 1">
+          <div style="font-size:28px;margin-bottom:8px">🔍</div>
+          <div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">RECOVER</div>
+          <div style="font-size:0.7rem;color:var(--grey);margin-top:4px">24-48 Hours</div>
+        </button>
+        <button class="lifecycle-node" data-id="repair" style="grid-column:span 1">
+          <div style="font-size:28px;margin-bottom:8px">🛠️</div>
+          <div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">REPAIR</div>
+          <div style="font-size:0.7rem;color:var(--grey);margin-top:4px">12 Hours</div>
+        </button>
+        <button class="lifecycle-node" data-id="track" style="grid-column:span 1">
+          <div style="font-size:28px;margin-bottom:8px">📡</div>
+          <div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">TRACK</div>
+          <div style="font-size:0.7rem;color:var(--grey);margin-top:4px">Real-time</div>
+        </button>
+        <button class="lifecycle-node" data-id="redeploy" style="grid-column:span 1">
+          <div style="font-size:28px;margin-bottom:8px">🚚</div>
+          <div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">REDEPLOY</div>
+          <div style="font-size:0.7rem;color:var(--grey);margin-top:4px">Same-day</div>
+        </button>
+        <button class="lifecycle-node" data-id="manufacture" style="grid-column:span 1">
+          <div style="font-size:28px;margin-bottom:8px">🏗️</div>
+          <div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">MANUFACTURE</div>
+          <div style="font-size:0.7rem;color:var(--grey);margin-top:4px">Batch Cycle</div>
+        </button>
+        <button class="lifecycle-node" data-id="recycle" style="grid-column:span 1">
+          <div style="font-size:28px;margin-bottom:8px">♻️</div>
+          <div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">RECYCLE</div>
+          <div style="font-size:0.7rem;color:var(--grey);margin-top:4px">On-demand</div>
+        </button>
+      </div>
+
+      <!-- Dynamic Detail Panel -->
+      <div id="lifecycle-detail" style="background:var(--charcoal);border:1px solid var(--border-light);border-radius:10px;padding:32px;margin:40px auto;max-width:600px;color:var(--sand)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border-light)">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--copper)">PHASE STATUS ACTIVE</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--grey)" id="lifecycle-id">ID: KS-RECOVER</span>
+        </div>
+        <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px">
+          <span id="lifecycle-icon">🔍</span>
+          <span id="lifecycle-name">RECOVER</span> Stage
+        </h3>
+        <p style="color:var(--grey-light);font-size:0.95rem;line-height:1.8;margin-bottom:24px" id="lifecycle-desc">Active sweep & retrieval across nationwide logistics channels using geolocation beacons.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding-top:16px;border-top:1px solid var(--border-light);text-align:left">
+          <div>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Duration</p>
+            <p style="font-size:0.95rem;font-weight:600" id="lifecycle-duration">24-48 Hours</p>
+          </div>
+          <div>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px">CO₂ Saved</p>
+            <p style="font-size:0.95rem;font-weight:600;color:var(--copper-light)" id="lifecycle-co2">1.2 kg/pallet</p>
+          </div>
+          <div>
+            <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Key Metric</p>
+            <p style="font-size:0.95rem;font-weight:600;color:var(--gold)" id="lifecycle-metric">94.2% Success</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1008,6 +1020,75 @@
       <div class="cta-actions reveal" style="transition-delay:0.2s">
         <a href="#contact" class="btn-copper">REQUEST CONSULTATION →</a>
         <a href="#contact" class="btn-ghost">LEARN MORE</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ROI CALCULATOR ════════════════════════════════════════════════════ -->
+  <section style="padding:120px 0;background:linear-gradient(135deg,rgba(24,50,36,0.1) 0%,rgba(26,20,20,0.1) 100%)">
+    <div class="wrap">
+      <div class="reveal" style="text-align:center;margin-bottom:60px">
+        <div class="section-tag" style="justify-content:center;display:flex">Financial Impact Modeler</div>
+        <h2 style="font-size:clamp(2rem,3.5vw,3rem);text-transform:uppercase;margin-bottom:16px">Estimate Your Annual ROI</h2>
+        <p style="color:var(--grey);font-size:1.02rem;line-height:1.8;max-width:600px;margin:0 auto">Adjust your metrics to see how much you can save annually with Kake Sky's pallet recovery system.</p>
+      </div>
+
+      <div style="background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:10px;padding:44px;max-width:900px;margin:0 auto" class="reveal">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center">
+
+          <!-- Interactive Sliders -->
+          <div style="space-y:24px">
+            <div style="margin-bottom:32px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <label style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;font-weight:600;color:var(--charcoal)">Annual Pallet Volume</label>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:0.95rem;font-weight:700;color:var(--copper)" id="roi-pallets-display">15,000</span>
+              </div>
+              <input type="range" min="1000" max="100000" step="1000" value="15000" id="roi-pallets" style="width:100%;cursor:pointer">
+            </div>
+
+            <div style="margin-bottom:32px">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <label style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;font-weight:600;color:var(--charcoal)">Cost per Replacement Unit</label>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:0.95rem;font-weight:700;color:var(--copper)" id="roi-cost-display">R 180</span>
+              </div>
+              <input type="range" min="80" max="500" step="10" value="180" id="roi-cost" style="width:100%;cursor:pointer">
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+                <label style="font-family:'IBM Plex Mono',monospace;font-size:0.85rem;font-weight:600;color:var(--charcoal)">Current Annual Loss Rate</label>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:0.95rem;font-weight:700;color:#dc2626" id="roi-loss-display">22%</span>
+              </div>
+              <input type="range" min="5" max="45" step="1" value="22" id="roi-loss" style="width:100%;cursor:pointer">
+            </div>
+          </div>
+
+          <!-- Results Box -->
+          <div style="background:linear-gradient(135deg,var(--forest-dark) 0%,#0f2418 100%);border:1px solid var(--border-light);border-radius:10px;padding:32px;color:var(--sand);position:relative;overflow:hidden">
+            <div style="position:absolute;top:-40px;right:-40px;width:120px;height:120px;background:rgba(200,112,64,0.15);border-radius:50%;pointer-events:none"></div>
+
+            <div style="position:relative;z-index:1">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:8px">Estimated Annual Savings</span>
+              <div style="font-size:clamp(2rem,4vw,3.2rem);font-weight:800;font-family:'Syne',sans-serif;color:var(--copper-light);margin-bottom:24px" id="roi-savings-display">R 247,680</div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.1)">
+                <div>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Current Loss Spend</span>
+                  <p style="font-size:0.95rem;font-weight:600;font-family:'IBM Plex Mono',monospace" id="roi-loss-spend">R 594,000</p>
+                </div>
+                <div>
+                  <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">CO₂ Offset Potential</span>
+                  <p style="font-size:0.95rem;font-weight:600;font-family:'IBM Plex Mono',monospace;color:#10b981" id="roi-co2">~18.2 Tons</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <button onclick="attachROItoForm()" style="width:100%;margin-top:32px;padding:14px;background:var(--charcoal);color:#fff;font-weight:600;border:none;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;text-transform:uppercase;transition:var(--transition)" onmouseover="this.style.background=var('--copper')" onmouseout="this.style.background=var('--charcoal')">
+          Attach ROI Report to Assessment Form →
+        </button>
       </div>
     </div>
   </section>
@@ -1105,7 +1186,274 @@
   </footer>
 
   <script>
+    // ═══ LIFECYCLE DATA ═══
+    const lifecycleData = {
+      recover: {
+        name: 'RECOVER',
+        icon: '🔍',
+        id: 'recover',
+        duration: '24-48 Hours',
+        co2: '1.2 kg/pallet',
+        metric: '94.2% Success Rate',
+        desc: 'Active sweep & retrieval across nationwide logistics channels using geolocation beacons.'
+      },
+      repair: {
+        name: 'REPAIR',
+        icon: '🛠️',
+        id: 'repair',
+        duration: '12 Hours',
+        co2: '4.8 kg/pallet',
+        metric: '<0.5% Scrap Rate',
+        desc: 'Automated defect detection and structural re-conditioning to ISO safety standards.'
+      },
+      track: {
+        name: 'TRACK',
+        icon: '📡',
+        id: 'track',
+        duration: 'Real-time (24/7)',
+        co2: 'Efficiency',
+        metric: '100% Audit Ready',
+        desc: 'RFID & IoT ledger synchronization for full chain-of-custody visibility.'
+      },
+      redeploy: {
+        name: 'REDEPLOY',
+        icon: '🚚',
+        id: 'redeploy',
+        duration: 'Same-day',
+        co2: '2.1 kg/pallet',
+        metric: '35% Idle Cut',
+        desc: 'Dynamic dispatch algorithms route available units directly to nearest regional demand hubs.'
+      },
+      manufacture: {
+        name: 'MANUFACTURE',
+        icon: '🏗️',
+        id: 'manufacture',
+        duration: 'Batch Cycle',
+        co2: '0.8 kg/pallet',
+        metric: '+3 Year Lifespan',
+        desc: 'Sustainable timber sourcing and precision modular construction for extended lifecycle pallets.'
+      },
+      recycle: {
+        name: 'RECYCLE',
+        icon: '♻️',
+        id: 'recycle',
+        duration: 'On-demand',
+        co2: '8.5 kg/pallet',
+        metric: '100% Landfill Free',
+        desc: 'Zero-waste grinding and conversion into secondary raw materials for composite products.'
+      }
+    };
+
+    // ═══ SERVICE DATA ═══
+    const servicesData = [
+      {
+        id: 'SRV-01',
+        title: 'Asset Recovery & Retrieval',
+        location: 'Nationwide Depots',
+        status: 'ACTIVE',
+        summary: 'Automated location sweeps to retrieve misplaced or stranded pallets.',
+        sla: '48-hour turnaround from ping identification',
+        details: [
+          'Dedicated field sweep teams with direct site access permissions.',
+          'Digital proof-of-recovery capture with timestamped photo verification.',
+          'Integration with contractor check-in/check-out logs.'
+        ],
+        output: '14,280+ units YTD'
+      },
+      {
+        id: 'SRV-02',
+        title: 'Automated Repair & Testing',
+        location: 'Gauteng & Cape Town Hubs',
+        status: 'OPERATIONAL',
+        summary: 'Robotic sorting, board replacement, and load-stress testing.',
+        sla: 'ISO 8611 Load Compliance Guarantee',
+        details: [
+          'Pneumatic nail extraction and automated runner replacing.',
+          'Ultrasonic timber density inspection to prevent field collapsing.',
+          'Heat treatment (ISPM 15) compliance for export readiness.'
+        ],
+        output: '8,400+ refurbished/mo'
+      },
+      {
+        id: 'SRV-03',
+        title: 'Reverse Logistics Network',
+        location: 'Regional Distribution Centers',
+        status: 'OPTIMIZED',
+        summary: 'Dynamic dispatch algorithms route available units to nearest demand hubs.',
+        sla: 'Same-day collection & next-day delivery',
+        details: [
+          'Real-time routing optimization using machine learning.',
+          'Consolidated regional hubs reduce transport emissions by 35%.',
+          'Multi-modal transport (road, rail, sea) scheduling.'
+        ],
+        output: '450+ weekly pickups'
+      },
+      {
+        id: 'SRV-04',
+        title: 'RFID Tracking & Traceability',
+        location: 'Network-wide Ledger',
+        status: 'LIVE',
+        summary: 'RFID & IoT ledger synchronization for full chain-of-custody visibility.',
+        sla: '100% Audit Readiness & Real-time Updates',
+        details: [
+          'RFID tag embedding at recovery stage for permanent tracking.',
+          'Blockchain-backed ledger entry for immutable custody records.',
+          'API integration with customer inventory management systems.'
+        ],
+        output: '24/7 visibility'
+      },
+      {
+        id: 'SRV-05',
+        title: 'Pallet Manufacturing',
+        location: 'ZA Eastern Cape Mill',
+        status: 'SCHEDULED',
+        summary: 'Sustainable timber sourcing and precision modular construction.',
+        sla: 'Custom specifications with 4-week lead time',
+        details: [
+          'FSC-certified timber sourcing with zero waste policy.',
+          'Precision CNC cutting and automated assembly.',
+          'Heavy-duty spec (2000+ kg load) for industrial applications.'
+        ],
+        output: '+3 year extended lifespan'
+      },
+      {
+        id: 'SRV-06',
+        title: 'Recycling & Material Recovery',
+        location: 'Regional Collection Centers',
+        status: 'ON-DEMAND',
+        summary: 'Zero-waste grinding and conversion into secondary raw materials.',
+        sla: 'Scheduled batch cycles with flexible frequency',
+        details: [
+          'Timber chip production for biomass energy applications.',
+          'Mulch & compost production for agricultural markets.',
+          '100% landfill diversion with material traceability reports.'
+        ],
+        output: '100% resource recovery'
+      }
+    ];
+
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ─── LIFECYCLE INTERACTIVE NODES ─────────────────────────────── */
+    function updateLifecycleDetail(stepId) {
+      const step = lifecycleData[stepId];
+      document.getElementById('lifecycle-icon').textContent = step.icon;
+      document.getElementById('lifecycle-name').textContent = step.name;
+      document.getElementById('lifecycle-id').textContent = `ID: KS-${step.id.toUpperCase()}`;
+      document.getElementById('lifecycle-desc').textContent = step.desc;
+      document.getElementById('lifecycle-duration').textContent = step.duration;
+      document.getElementById('lifecycle-co2').textContent = step.co2;
+      document.getElementById('lifecycle-metric').textContent = step.metric;
+    }
+
+    document.querySelectorAll('.lifecycle-node').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.lifecycle-node').forEach(b => {
+          b.style.background = 'rgba(30, 61, 44, 0.4)';
+          b.style.borderColor = 'rgba(200, 112, 64, 0.15)';
+        });
+        btn.style.background = 'rgba(200, 112, 64, 0.15)';
+        btn.style.borderColor = 'var(--copper)';
+        updateLifecycleDetail(btn.dataset.id);
+      });
+      btn.addEventListener('mouseover', () => {
+        updateLifecycleDetail(btn.dataset.id);
+      });
+    });
+    updateLifecycleDetail('recover');
+
+    /* ─── SERVICE CARDS & MODAL ──────────────────────────────────── */
+    const svcGrid = document.getElementById('svc-grid');
+    servicesData.forEach((srv, idx) => {
+      const card = document.createElement('div');
+      card.className = 'svc-card reveal';
+      card.style.cursor = 'pointer';
+      card.style.transitionDelay = `${idx * 0.1}s`;
+      card.innerHTML = `
+        <div class="svc-left">
+          <div class="svc-num">${srv.id.split('-')[1]}.</div>
+          <div class="svc-name">${srv.title}</div>
+        </div>
+        <div class="svc-terminal">
+          <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+          <div class="term-row"><span class="term-key">ID:</span><span class="term-val">${srv.id}</span></div>
+          <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">${srv.location}</span></div>
+          <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">${srv.status}</span></div>
+        </div>
+      `;
+      card.addEventListener('click', () => openServiceModal(idx));
+      svcGrid.appendChild(card);
+    });
+
+    function openServiceModal(idx) {
+      const srv = servicesData[idx];
+      document.getElementById('modal-srv-id').textContent = srv.id;
+      document.getElementById('modal-srv-title').textContent = srv.title;
+      document.getElementById('modal-srv-summary').textContent = srv.summary;
+      document.getElementById('modal-srv-sla').textContent = srv.sla;
+      document.getElementById('modal-srv-output').textContent = srv.output;
+
+      const detailsList = document.getElementById('modal-srv-details');
+      detailsList.innerHTML = '';
+      srv.details.forEach(detail => {
+        const li = document.createElement('li');
+        li.style.cssText = 'font-size:0.9rem;color:rgba(247,246,242,0.75);line-height:1.6;margin-bottom:12px;display:flex;gap:10px';
+        li.innerHTML = `<span style="color:var(--copper);flex-shrink:0">›</span><span>${detail}</span>`;
+        detailsList.appendChild(li);
+      });
+
+      document.getElementById('service-modal').style.display = 'block';
+    }
+
+    function closeServiceModal() {
+      document.getElementById('service-modal').style.display = 'none';
+    }
+
+    document.getElementById('service-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'service-modal') closeServiceModal();
+    });
+
+    /* ─── ROI CALCULATOR ─────────────────────────────────────────── */
+    const roiPallets = document.getElementById('roi-pallets');
+    const roiCost = document.getElementById('roi-cost');
+    const roiLoss = document.getElementById('roi-loss');
+
+    function updateROI() {
+      const pallets = parseInt(roiPallets.value);
+      const cost = parseInt(roiCost.value);
+      const lossRate = parseInt(roiLoss.value);
+
+      const totalSpend = pallets * cost;
+      const currentLossCost = totalSpend * (lossRate / 100);
+      const estimatedSavings = currentLossCost * 0.78; // 78% recovery improvement
+      const co2Offset = ((pallets * (lossRate / 100) * 0.78) * 12) / 1000;
+
+      document.getElementById('roi-pallets-display').textContent = pallets.toLocaleString();
+      document.getElementById('roi-cost-display').textContent = `R ${cost}`;
+      document.getElementById('roi-loss-display').textContent = `${lossRate}%`;
+      document.getElementById('roi-savings-display').textContent = `R ${Math.round(estimatedSavings).toLocaleString()}`;
+      document.getElementById('roi-loss-spend').textContent = `R ${Math.round(currentLossCost).toLocaleString()}`;
+      document.getElementById('roi-co2').textContent = `~${co2Offset.toFixed(1)} Tons`;
+    }
+
+    roiPallets.addEventListener('input', updateROI);
+    roiCost.addEventListener('input', updateROI);
+    roiLoss.addEventListener('input', updateROI);
+    updateROI();
+
+    function attachROItoForm() {
+      const savings = document.getElementById('roi-savings-display').textContent;
+      const pallets = document.getElementById('roi-pallets-display').textContent;
+      const lossRate = document.getElementById('roi-loss-display').textContent;
+      const msg = `Hi Kake Sky team, based on my calculations (Annual volume: ${pallets} pallets, Loss rate: ${lossRate}), we estimate potential savings of ${savings}. Let's discuss an audit.`;
+      const form = document.querySelector('.contact-form textarea') || document.querySelector('textarea[name="message"]');
+      if (form) form.value = msg;
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function scrollToContact() {
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    }
 
     /* ─── Nav scroll ────────────────────────────────────────────────── */
     const nav = document.getElementById('nav');
