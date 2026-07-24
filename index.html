@@ -245,6 +245,53 @@
     }
     .sp-row-val.copper { color: var(--copper-light); font-size: 1.1rem; }
 
+    /* ─── HERO: entrance animation, trust line, panel bar, scroll cue ─ */
+    @keyframes heroUp { from { opacity:0; transform: translateY(22px); } to { opacity:1; transform:none; } }
+    .hero-badge, .hero-h1, .hero-sub, .hero-actions, .hero-trust, .status-panel {
+      opacity: 0; animation: heroUp 0.85s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .hero-badge   { animation-delay: 0.10s; }
+    .hero-h1      { animation-delay: 0.22s; }
+    .hero-sub     { animation-delay: 0.36s; }
+    .hero-actions { animation-delay: 0.50s; }
+    .hero-trust   { animation-delay: 0.62s; }
+    .status-panel { animation-delay: 0.72s; }
+
+    .hero-trust {
+      margin-top: 30px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(247,246,242,0.4);
+    }
+    .hero-trust b { color: rgba(247,246,242,0.72); font-weight: 600; }
+    .hero-trust .dot { width:3px; height:3px; border-radius:50%; background:var(--copper); }
+
+    .sp-bar { height:5px; border-radius:4px; background:rgba(255,255,255,0.08); margin-top:10px; overflow:hidden; }
+    .sp-bar-fill { height:100%; width:0; border-radius:4px;
+      background:linear-gradient(90deg,var(--copper),var(--copper-light)); transition: width 1.6s cubic-bezier(0.22,1,0.36,1); }
+
+    .scroll-cue {
+      position:absolute; left:50%; bottom:26px; transform:translateX(-50%); z-index:2;
+      display:flex; flex-direction:column; align-items:center; gap:10px;
+      background:none; border:none; cursor:pointer;
+      font-family:'IBM Plex Mono',monospace; font-size:0.56rem; letter-spacing:0.24em;
+      color: rgba(247,246,242,0.5); transition: color 0.3s;
+      opacity:0; animation: heroUp 0.85s ease forwards; animation-delay: 1s;
+    }
+    .scroll-cue:hover { color: var(--copper); }
+    .cue-track { position:relative; width:1px; height:40px; background:rgba(247,246,242,0.16); overflow:hidden; }
+    .cue-dot { position:absolute; left:0; top:0; width:1px; height:12px; background:var(--copper);
+      animation: cueDrop 1.9s cubic-bezier(0.4,0,0.2,1) infinite; }
+    @keyframes cueDrop { 0%{transform:translateY(-14px);opacity:0} 25%{opacity:1} 88%{opacity:1} 100%{transform:translateY(40px);opacity:0} }
+
+    :focus-visible { outline: 2px solid var(--copper-light); outline-offset: 3px; border-radius: 4px; }
+
+    @media (max-width: 768px) { .scroll-cue { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-badge,.hero-h1,.hero-sub,.hero-actions,.hero-trust,.status-panel,.scroll-cue { opacity:1; animation:none; }
+      .cue-dot, .hero-badge-dot, .sp-dot { animation: none; }
+    }
+
     /* ─── LIVE TICKER ───────────────────────────────────────────── */
     .live-ticker {
       background:var(--charcoal);
@@ -741,6 +788,10 @@
             <button class="btn-copper" onclick="goPage('services')">OUR SERVICES <span class="btn-arrow">→</span></button>
             <button class="btn-ghost" onclick="goPage('contact')">GET IN TOUCH <span class="btn-arrow">→</span></button>
           </div>
+          <div class="hero-trust">
+            Trusted across
+            <b>Cement</b><span class="dot"></span><b>Construction</b><span class="dot"></span><b>Mining</b><span class="dot"></span><b>Manufacturing</b>
+          </div>
         </div>
 
         <div class="status-panel">
@@ -750,11 +801,12 @@
           </div>
           <div class="sp-row">
             <div class="sp-row-label">Pallets in System</div>
-            <div class="sp-row-val">14,284</div>
+            <div class="sp-row-val" id="sp-pallets">14,284</div>
           </div>
           <div class="sp-row">
             <div class="sp-row-label">Recovery Rate</div>
-            <div class="sp-row-val copper">94.2%</div>
+            <div class="sp-row-val copper" id="sp-recovery">94.2%</div>
+            <div class="sp-bar"><div class="sp-bar-fill" id="sp-bar-fill"></div></div>
           </div>
           <div class="sp-row">
             <div class="sp-row-label">Active Route</div>
@@ -764,6 +816,11 @@
           </div>
         </div>
       </div>
+
+      <button class="scroll-cue" onclick="document.querySelector('.live-ticker').scrollIntoView({behavior:'smooth'})" aria-label="Scroll to live feed">
+        <span>SCROLL</span>
+        <span class="cue-track"><span class="cue-dot"></span></span>
+      </button>
     </section>
 
     <!-- Live Ticker -->
@@ -1430,6 +1487,36 @@
       btn.style.background = 'var(--forest-mid)';
       btn.disabled = true;
     }
+
+    // ═══ HERO STAT COUNT-UP + RECOVERY BAR ════════════════════════
+    (function heroStats() {
+      const palletsEl = document.getElementById('sp-pallets');
+      const recovEl = document.getElementById('sp-recovery');
+      const barEl = document.getElementById('sp-bar-fill');
+      if (!palletsEl || !recovEl || !barEl) return;
+      const palletsTarget = 14284, recovTarget = 94.2;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) {
+        palletsEl.textContent = palletsTarget.toLocaleString();
+        recovEl.textContent = recovTarget.toFixed(1) + '%';
+        barEl.style.width = recovTarget + '%';
+        return;
+      }
+      palletsEl.textContent = '0';
+      recovEl.textContent = '0.0%';
+      const dur = 1600;
+      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+      setTimeout(() => {
+        barEl.style.width = recovTarget + '%';
+        const start = performance.now();
+        (function tick(now) {
+          const p = Math.min(1, (now - start) / dur), e = easeOutCubic(p);
+          palletsEl.textContent = Math.round(palletsTarget * e).toLocaleString();
+          recovEl.textContent = (recovTarget * e).toFixed(1) + '%';
+          if (p < 1) requestAnimationFrame(tick);
+        })(start);
+      }, 750); // sync with the panel's entrance
+    })();
 
     // ═══ 3D HERO PALLET — raw WebGL, no external libraries ═════════
     // Real GPU lighting (matches the design's Three.js material/lights)
