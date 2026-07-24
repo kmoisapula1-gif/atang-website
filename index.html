@@ -731,6 +731,41 @@
     </div>
   </section>
 
+  <!-- ═══ LIVE STATUS TICKER ═════════════════════════════════════════ -->
+  <div style="background:var(--charcoal);border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light);padding:16px 0;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:var(--grey)">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px">
+
+      <!-- Live Status Indicators -->
+      <div style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="position:relative;display:inline-flex;height:8px;width:8px">
+            <span style="animation:ping 2s cubic-bezier(0,0,0.2,1) infinite;position:absolute;inline-flex;height:100%;width:100%;border-radius:50%;background:rgba(16,185,129,0.7);opacity:0.75"></span>
+            <span style="position:relative;display:inline-flex;border-radius:50%;height:8px;width:8px;background:#10b981"></span>
+          </span>
+          <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Network:</span>
+          <span style="color:#10b981;font-weight:600">ONLINE</span>
+        </div>
+
+        <div style="display:none;gap:6px;align-items:center;border-left:1px solid var(--border-light);padding-left:24px;@media(min-width:640px){display:flex}">
+          <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Tracked:</span>
+          <span style="color:var(--copper-light);font-weight:600;font-size:0.95rem" id="ticker-assets">14,284</span>
+        </div>
+
+        <div style="display:none;gap:6px;align-items:center;border-left:1px solid var(--border-light);padding-left:24px;@media(min-width:768px){display:flex}">
+          <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Recovery:</span>
+          <span style="color:#10b981;font-weight:600;font-size:0.95rem" id="ticker-recovery">94.2%</span>
+        </div>
+      </div>
+
+      <!-- Live Feed -->
+      <div style="display:flex;align-items:center;gap:12px;background:rgba(0,0,0,0.3);border:1px solid var(--border-light);padding:8px 12px;border-radius:6px;flex:1;min-width:300px">
+        <span style="background:rgba(200,112,64,0.15);color:var(--copper);border:1px solid var(--border-light);font-size:0.7rem;padding:3px 8px;border-radius:3px;text-transform:uppercase;font-weight:600;white-space:nowrap;flex-shrink:0" id="ticker-type">RECOVER</span>
+        <p style="font-size:0.8rem;color:rgba(247,246,242,0.8);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0;flex:1" id="ticker-text">Batch #4,210 recovered in Johannesburg Central Depot</p>
+        <span style="color:var(--grey);font-size:0.75rem;white-space:nowrap;flex-shrink:0" id="ticker-time">2m ago</span>
+      </div>
+    </div>
+  </div>
+
   <!-- ═══ INDUSTRIES ═══════════════════════════════════════════════ -->
   <section id="industries">
     <div class="wrap">
@@ -954,58 +989,58 @@
     </div>
   </section>
 
-  <!-- ═══ COVERAGE ══════════════════════════════════════════════════ -->
+  <!-- ═══ COVERAGE (INTERACTIVE REGIONAL MAP) ══════════════════════════════════════════════════ -->
   <section id="coverage">
-    <div class="wrap coverage-grid">
-      <div class="reveal">
-        <div class="cov-tag">Regional Coverage</div>
-        <h2 class="cov-h2">Southern Africa's<br/><span>Industrial Heartland</span></h2>
-        <p class="cov-p">Operating structured collection routes across major industrial nodes. We ensure distance never compromises asset recovery.</p>
-        <ul class="cov-list">
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Gauteng Manufacturing Hub
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            KZN Ports &amp; Distribution
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Western Cape Logistics
-          </li>
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Mpumalanga Heavy Industry
-          </li>
-        </ul>
+    <div class="wrap">
+      <div class="reveal" style="text-align:center;margin-bottom:60px">
+        <div class="cov-tag" style="justify-content:center;display:flex">Geographic Scale & Logistics Infrastructure</div>
+        <h2 class="cov-h2">Southern Africa Hub Coverage</h2>
+        <p class="cov-p" style="margin:16px auto 0;max-width:600px;text-align:center">Select a hub to inspect live regional capacities, asset allocations, and turnaround times.</p>
       </div>
-      <div class="reveal map-box" style="transition-delay:0.2s">
-        <div class="map-glow"></div>
-        <svg class="map-svg" viewBox="0 0 100 120" fill="none" stroke="white" stroke-width="0.5">
-          <path d="M38 8 L62 8 L75 20 L80 38 L78 55 L68 70 L62 90 L55 110 L45 110 L38 90 L32 70 L22 55 L20 38 L25 20 Z"/>
-          <path d="M55 110 L60 118 L45 118 L50 110"/>
-        </svg>
-        <div class="map-dot" style="top:35%;left:62%">
-          <div class="map-dot-ring"></div>
-          <div class="map-dot-core"></div>
-          <div class="map-dot-label">GAUTENG</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center">
+
+        <!-- Interactive Hub Selector -->
+        <div style="display:flex;flex-direction:column;gap:12px" id="regional-hubs">
+          <!-- Populated by JS -->
         </div>
-        <div class="map-dot" style="top:55%;left:72%">
-          <div class="map-dot-ring" style="animation-delay:0.4s"></div>
-          <div class="map-dot-core" style="background:var(--gold);width:9px;height:9px"></div>
-          <div class="map-dot-label" style="color:var(--gold)">KZN</div>
+
+        <!-- Regional Details Dashboard -->
+        <div style="background:var(--forest-panel);border:1px solid var(--border-light);border-radius:10px;padding:32px;color:var(--sand);position:relative;overflow:hidden">
+          <div style="position:absolute;top:0;right:0;width:180px;height:180px;background:rgba(200,112,64,0.1);border-radius:50%;pointer-events:none"></div>
+
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border-light);position:relative;z-index:1">
+            <div>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Selected Infrastructure Hub</span>
+              <h3 style="font-size:1.6rem;font-weight:700;color:var(--sand)" id="region-name">Gauteng Primary Hub</h3>
+            </div>
+            <span style="padding:6px 12px;background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3);font-family:'IBM Plex Mono',monospace;font-size:0.7rem;border-radius:6px;font-weight:600;text-transform:uppercase;white-space:nowrap" id="region-capacity">88% Capacity</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+            <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border-light);padding:16px;border-radius:8px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Active Pallet Assets</span>
+              <p style="font-size:1.1rem;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--copper-light)" id="region-assets">6,420 units</p>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border-light);padding:16px;border-radius:8px">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Guaranteed Turnaround</span>
+              <p style="font-size:1.1rem;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--sand)" id="region-turnaround">12-24 Hours</p>
+            </div>
+          </div>
+
+          <div style="margin-bottom:24px">
+            <h4 style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);margin-bottom:12px">Key Sub-Districts Covered</h4>
+            <div style="display:flex;flex-wrap:wrap;gap:8px" id="region-coverage">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+
+          <div style="padding-top:16px;border-top:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;color:rgba(247,246,242,0.7)">
+            <span>Facility: <span id="region-facility" style="color:var(--copper-light)">Gauteng Central Logistics Base</span></span>
+            <button onclick="scrollToContact()" style="color:var(--copper-light);background:none;border:none;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-weight:600;transition:var(--transition)">Request Dispatch →</button>
+          </div>
         </div>
-        <div class="map-dot" style="top:80%;left:30%">
-          <div class="map-dot-ring" style="animation-delay:0.8s"></div>
-          <div class="map-dot-core" style="background:var(--gold);width:9px;height:9px"></div>
-          <div class="map-dot-label" style="color:var(--gold)">CAPE TOWN</div>
-        </div>
-        <div class="map-dot" style="top:42%;left:70%">
-          <div class="map-dot-ring" style="animation-delay:1.2s"></div>
-          <div class="map-dot-core" style="background:var(--gold);width:8px;height:8px"></div>
-          <div class="map-dot-label" style="color:var(--gold)">MPU</div>
-        </div>
+
       </div>
     </div>
   </section>
@@ -1186,6 +1221,86 @@
   </footer>
 
   <script>
+    // ═══ LIVE TICKER DATA ═══
+    const liveEvents = [
+      { id: 'EV-8921', text: 'Batch #4,210 recovered in Johannesburg Central Depot', time: '2m ago', type: 'RECOVER' },
+      { id: 'EV-8922', text: '180 Heavy Duty Units dispatched to Durban Hub', time: '5m ago', type: 'REDEPLOY' },
+      { id: 'EV-8923', text: 'Structural load test passed: 320 repaired units (Cape Town)', time: '8m ago', type: 'REPAIR' },
+      { id: 'EV-8924', text: 'RFID Sync completed: 1,450 units registered in Mpumalanga', time: '12m ago', type: 'TRACK' },
+      { id: 'EV-8925', text: '56 new manufactured pallets deployed to Gauteng network', time: '15m ago', type: 'MANUFACTURE' },
+      { id: 'EV-8926', text: '2,340 units recycled into biomass energy feedstock', time: '18m ago', type: 'RECYCLE' },
+    ];
+
+    let tickerIndex = 0;
+    let assetCount = 14284;
+    let recoveryRate = 94.2;
+
+    function updateTicker() {
+      const event = liveEvents[tickerIndex];
+      document.getElementById('ticker-type').textContent = event.type;
+      document.getElementById('ticker-text').textContent = event.text;
+      document.getElementById('ticker-time').textContent = event.time;
+
+      assetCount += Math.floor(Math.random() * 5) + 1;
+      document.getElementById('ticker-assets').textContent = assetCount.toLocaleString();
+
+      recoveryRate = Math.min(99.9, recoveryRate + (Math.random() * 0.3));
+      document.getElementById('ticker-recovery').textContent = recoveryRate.toFixed(1) + '%';
+
+      tickerIndex = (tickerIndex + 1) % liveEvents.length;
+    }
+
+    setInterval(updateTicker, 5000);
+    updateTicker();
+
+    // ═══ REGIONAL COVERAGE DATA ═══
+    const regionsData = [
+      {
+        id: 'gauteng',
+        name: 'Gauteng Primary Hub',
+        location: 'Johannesburg / Pretoria',
+        assets: '6,420 units',
+        turnaround: '12 - 24 Hours',
+        capacity: '88% Capacity',
+        facility: 'Gauteng Central Logistics Base',
+        coverage: ['Ekurhuleni', 'Midrand', 'Vanderbijlpark', 'Pretoria Industrial'],
+        status: 'PRIMARY HUB'
+      },
+      {
+        id: 'kzn',
+        name: 'KwaZulu-Natal Port Hub',
+        location: 'Durban / Pinetown',
+        assets: '3,850 units',
+        turnaround: '24 Hours',
+        capacity: '74% Capacity',
+        facility: 'Durban Harbor & Distribution Depot',
+        coverage: ['Durban South', 'Pinetown Logistics Park', 'Pietermaritzburg'],
+        status: 'PORT DISPATCH'
+      },
+      {
+        id: 'cape',
+        name: 'Western Cape Hub',
+        location: 'Cape Town / Winelands',
+        assets: '2,610 units',
+        turnaround: '24 - 48 Hours',
+        capacity: '65% Capacity',
+        facility: 'Montague Gardens Regional Yard',
+        coverage: ['Cape Town Harbor', 'Paarl Industrial', 'Stellenbosch Distribution'],
+        status: 'ACTIVE REGION'
+      },
+      {
+        id: 'mpumalanga',
+        name: 'Mpumalanga Mining Corridor',
+        location: 'eMalahleni / Mbombela',
+        assets: '1,404 units',
+        turnaround: '48 Hours',
+        capacity: '82% Capacity',
+        facility: 'Highveld Resource Depot',
+        coverage: ['eMalahleni Mining Belt', 'Secunda Heavy Sector', 'Nelspruit Logistics'],
+        status: 'MINING DEPOT'
+      }
+    ];
+
     // ═══ LIFECYCLE DATA ═══
     const lifecycleData = {
       recover: {
@@ -1454,6 +1569,56 @@
     function scrollToContact() {
       document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
     }
+
+    /* ─── INTERACTIVE REGIONAL HUB SELECTOR ─────────────────────── */
+    const hubsContainer = document.getElementById('regional-hubs');
+    let selectedRegion = regionsData[0];
+
+    function updateRegionDisplay(region) {
+      selectedRegion = region;
+      document.getElementById('region-name').textContent = region.name;
+      document.getElementById('region-assets').textContent = region.assets;
+      document.getElementById('region-turnaround').textContent = region.turnaround;
+      document.getElementById('region-capacity').textContent = region.capacity;
+      document.getElementById('region-facility').textContent = region.facility;
+
+      const coverageDiv = document.getElementById('region-coverage');
+      coverageDiv.innerHTML = '';
+      region.coverage.forEach(sub => {
+        const badge = document.createElement('span');
+        badge.style.cssText = 'padding:6px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--border-light);color:rgba(247,246,242,0.8);font-size:0.8rem;border-radius:6px;font-family:"IBM Plex Mono",monospace';
+        badge.textContent = '• ' + sub;
+        coverageDiv.appendChild(badge);
+      });
+
+      document.querySelectorAll('#regional-hubs > div').forEach((btn, idx) => {
+        if (regionsData[idx].id === region.id) {
+          btn.style.background = 'rgba(200,112,64,0.15)';
+          btn.style.borderColor = 'var(--copper)';
+        } else {
+          btn.style.background = 'rgba(30, 61, 44, 0.4)';
+          btn.style.borderColor = 'var(--border-light)';
+        }
+      });
+    }
+
+    regionsData.forEach((region, idx) => {
+      const btn = document.createElement('div');
+      btn.style.cssText = 'padding:20px;border:1px solid var(--border-light);border-radius:10px;background:rgba(30, 61, 44, 0.4);color:var(--sand);cursor:pointer;transition:var(--transition)';
+      btn.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--copper);text-transform:uppercase;font-weight:600">${region.status}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--grey)">${region.assets}</span>
+        </div>
+        <h3 style="font-size:1.1rem;font-weight:700;color:var(--sand);margin:0 0 4px 0">${region.name}</h3>
+        <p style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--grey);margin:0">${region.location}</p>
+      `;
+      btn.addEventListener('click', () => updateRegionDisplay(region));
+      btn.addEventListener('mouseover', () => updateRegionDisplay(region));
+      hubsContainer.appendChild(btn);
+    });
+
+    updateRegionDisplay(selectedRegion);
 
     /* ─── Nav scroll ────────────────────────────────────────────────── */
     const nav = document.getElementById('nav');
