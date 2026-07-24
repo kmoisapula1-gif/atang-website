@@ -305,7 +305,7 @@
       margin:0;
     }
     .feed-time {
-      color:var(--grey);
+      color:var(--grey-light);
       font-size:0.75rem;
       white-space:nowrap;
       flex-shrink:0;
@@ -449,12 +449,15 @@
       background:rgba(200,112,64,0.15);
     }
     .lifecycle-node span:first-child {
-      font-size:28px;
-      margin-bottom:8px;
       display:block;
+      margin-bottom:10px;
+      line-height:0;
     }
+    .lifecycle-node span:first-child svg { width:30px; height:30px; stroke:var(--copper-light); }
+    .lifecycle-node:hover span:first-child svg { stroke:var(--copper); }
+    #lifecycle-icon svg { width:24px; height:24px; stroke:var(--copper-light); vertical-align:-4px; }
     .lifecycle-detail {
-      background:var(--charcoal);
+      background:var(--forest-dark);
       border:1px solid var(--border-light);
       border-radius:10px;
       padding:32px;
@@ -464,7 +467,7 @@
     }
 
     /* ─── COVERAGE SECTION ──────────────────────────────────────── */
-    #coverage-page { background: var(--charcoal); color: #fff; }
+    #coverage-page { background: var(--forest-dark); color: #fff; }
     .coverage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
     .region-selector { display: flex; flex-direction: column; gap: 12px; }
     .region-btn {
@@ -480,7 +483,7 @@
     .region-btn:hover { border-color: var(--copper); background: rgba(200,112,64,0.15); }
     .region-status { font-family:'IBM Plex Mono',monospace; font-size:0.7rem; color:var(--copper); text-transform:uppercase; font-weight:600; }
     .region-name { font-size:1.1rem; font-weight:700; color:var(--sand); margin:6px 0; }
-    .region-location { font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--grey); }
+    .region-location { font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:var(--grey-light); }
     .region-detail {
       background:var(--forest-panel);
       border:1px solid var(--border-light);
@@ -771,19 +774,19 @@
         </div>
         <div class="ind-grid">
           <div class="ind-card reveal">
-            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21V9L8 6v3l5-3v3l5-3v15H3z"/><path d="M3 21h18"/></svg></div>
+            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8l-1.2 2.5a3 3 0 0 0 .2 3l1.3 2A5 5 0 0 1 17 13v3a5 5 0 0 1-10 0v-3a5 5 0 0 1 .5-2.5l1.3-2a3 3 0 0 0 .2-3z"/><path d="M9 10.5h6"/></svg></div>
             <div class="ind-name">Cement &amp; Bagged Products</div>
           </div>
           <div class="ind-card reveal" style="transition-delay:0.1s">
-            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21V11l9-7 9 7v10H3z"/><path d="M9 21v-6h6v6"/></svg></div>
+            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17a9 9 0 0 1 18 0"/><path d="M2 17h20v1.5a1.5 1.5 0 0 1-1.5 1.5h-17A1.5 1.5 0 0 1 2 18.5z"/><path d="M10 8V5.5A1.5 1.5 0 0 1 11.5 4h1A1.5 1.5 0 0 1 14 5.5V8"/></svg></div>
             <div class="ind-name">Construction &amp; Building Retail</div>
           </div>
           <div class="ind-card reveal" style="transition-delay:0.2s">
-            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M14 4l6 6M17 7L7 17l-3-3L14 4zM4 20l3-3"/></svg></div>
+            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 10 4 20"/><path d="M3 10c3-4 15-4 18 0"/><path d="M3 10c1 2.5 3.5 3.5 6 3M21 10c-1 2.5-3.5 3.5-6 3"/></svg></div>
             <div class="ind-name">Mining &amp; Consumables</div>
           </div>
           <div class="ind-card reveal" style="transition-delay:0.3s">
-            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21V10l6 3v-3l6 3v-3l6 3v11H3z"/><path d="M7 21v-4M12 21v-4M17 21v-4"/></svg></div>
+            <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.2 6.5l2.2 1.3M17.6 16.2l2.2 1.3M4.2 17.5l2.2-1.3M17.6 7.8l2.2-1.3"/></svg></div>
             <div class="ind-name">Manufacturing &amp; FMCG</div>
           </div>
           <div class="ind-card reveal" style="transition-delay:0.4s">
@@ -831,7 +834,7 @@
         <div class="page-header reveal">
           <div class="section-tag" style="justify-content:center;display:flex">Six Connected Capabilities</div>
           <h2 style="font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform:uppercase; margin-bottom: 16px;">One Lifecycle. Six Services.</h2>
-          <p style="color:var(--grey);font-size:1.02rem;line-height:1.8;max-width:600px;margin:0 auto">Click any service card to view SLAs, capabilities, and operational metrics.</p>
+          <p style="color:rgba(247,246,242,0.62);font-size:1.02rem;line-height:1.8;max-width:600px;margin:0 auto">Click any service card to view SLAs, capabilities, and operational metrics.</p>
         </div>
         <div class="svc-grid" id="svc-grid"></div>
       </div>
@@ -856,7 +859,7 @@
             <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;color:var(--grey)" id="lifecycle-id">ID: KS-RECOVER</span>
           </div>
           <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px">
-            <span id="lifecycle-icon">🔍</span>
+            <span id="lifecycle-icon"></span>
             <span id="lifecycle-name">RECOVER</span> Stage
           </h3>
           <p style="color:var(--grey-light);font-size:0.95rem;line-height:1.8;margin-bottom:24px" id="lifecycle-desc">Active sweep & retrieval across nationwide logistics channels using geolocation beacons.</p>
@@ -872,7 +875,7 @@
             </div>
             <div>
               <p style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--grey);margin-bottom:6px">Key Metric</p>
-              <p style="font-size:0.95rem;font-weight:600;color:var(--gold)" id="lifecycle-metric">94.2% Success</p>
+              <p style="font-size:0.95rem;font-weight:600;color:#5ec9a0" id="lifecycle-metric">94.2% Success</p>
             </div>
           </div>
         </div>
@@ -1176,18 +1179,27 @@
     updateTicker();
 
     // ═══ LIFECYCLE DATA ════════════════════════════════════════════
+    const ICONS = {
+      recover: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-3.8-3.8"/><path d="M11 8v3l2 1.3"/></svg>',
+      repair: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 6.5a3.8 3.8 0 0 0-5 4.9l-6 6L6 20l6-6a3.8 3.8 0 0 0 4.9-5l-2.4 2.4-2-.5-.5-2z"/></svg>',
+      track: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M8 8a5.7 5.7 0 0 0 0 8M16 16a5.7 5.7 0 0 0 0-8M5.3 5.3a9.5 9.5 0 0 0 0 13.4M18.7 18.7a9.5 9.5 0 0 0 0-13.4"/></svg>',
+      redeploy: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h11v9.5H2z"/><path d="M13 9.5h4l3 3v3.5h-7z"/><circle cx="6.5" cy="18" r="1.7"/><circle cx="16.5" cy="18" r="1.7"/></svg>',
+      manufacture: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V10l6 3.5V10l6 3.5V7l6 3.5V21z"/><path d="M2.5 21h19"/><path d="M8 17h2M14 17h2"/></svg>',
+      recycle: '<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11.5A8 8 0 0 0 6.3 6.3L4 8.5"/><path d="M4 4v4.5h4.5"/><path d="M4 12.5a8 8 0 0 0 13.7 5.2L20 15.5"/><path d="M20 20v-4.5h-4.5"/></svg>'
+    };
+
     const lifecycleData = {
-      recover: { name: 'RECOVER', icon: '🔍', id: 'recover', duration: '24-48 Hours', co2: '1.2 kg/pallet', metric: '94.2% Success Rate', desc: 'Active sweep & retrieval across nationwide logistics channels using geolocation beacons.' },
-      repair: { name: 'REPAIR', icon: '🛠️', id: 'repair', duration: '12 Hours', co2: '4.8 kg/pallet', metric: '<0.5% Scrap Rate', desc: 'Automated defect detection and structural re-conditioning to ISO safety standards.' },
-      track: { name: 'TRACK', icon: '📡', id: 'track', duration: 'Real-time (24/7)', co2: 'Efficiency', metric: '100% Audit Ready', desc: 'RFID & IoT ledger synchronization for full chain-of-custody visibility.' },
-      redeploy: { name: 'REDEPLOY', icon: '🚚', id: 'redeploy', duration: 'Same-day', co2: '2.1 kg/pallet', metric: '35% Idle Cut', desc: 'Dynamic dispatch algorithms route available units directly to nearest regional demand hubs.' },
-      manufacture: { name: 'MANUFACTURE', icon: '🏗️', id: 'manufacture', duration: 'Batch Cycle', co2: '0.8 kg/pallet', metric: '+3 Year Lifespan', desc: 'Sustainable timber sourcing and precision modular construction for extended lifecycle pallets.' },
-      recycle: { name: 'RECYCLE', icon: '♻️', id: 'recycle', duration: 'On-demand', co2: '8.5 kg/pallet', metric: '100% Landfill Free', desc: 'Zero-waste grinding and conversion into secondary raw materials for composite products.' }
+      recover: { name: 'RECOVER', icon: ICONS.recover, id: 'recover', duration: '24-48 Hours', co2: '1.2 kg/pallet', metric: '94.2% Success Rate', desc: 'Active sweep & retrieval across nationwide logistics channels using geolocation beacons.' },
+      repair: { name: 'REPAIR', icon: ICONS.repair, id: 'repair', duration: '12 Hours', co2: '4.8 kg/pallet', metric: '<0.5% Scrap Rate', desc: 'Automated defect detection and structural re-conditioning to ISO safety standards.' },
+      track: { name: 'TRACK', icon: ICONS.track, id: 'track', duration: 'Real-time (24/7)', co2: 'Efficiency', metric: '100% Audit Ready', desc: 'RFID & IoT ledger synchronization for full chain-of-custody visibility.' },
+      redeploy: { name: 'REDEPLOY', icon: ICONS.redeploy, id: 'redeploy', duration: 'Same-day', co2: '2.1 kg/pallet', metric: '35% Idle Cut', desc: 'Dynamic dispatch algorithms route available units directly to nearest regional demand hubs.' },
+      manufacture: { name: 'MANUFACTURE', icon: ICONS.manufacture, id: 'manufacture', duration: 'Batch Cycle', co2: '0.8 kg/pallet', metric: '+3 Year Lifespan', desc: 'Sustainable timber sourcing and precision modular construction for extended lifecycle pallets.' },
+      recycle: { name: 'RECYCLE', icon: ICONS.recycle, id: 'recycle', duration: 'On-demand', co2: '8.5 kg/pallet', metric: '100% Landfill Free', desc: 'Zero-waste grinding and conversion into secondary raw materials for composite products.' }
     };
 
     function updateLifecycleDetail(stepId) {
       const step = lifecycleData[stepId];
-      document.getElementById('lifecycle-icon').textContent = step.icon;
+      document.getElementById('lifecycle-icon').innerHTML = step.icon;
       document.getElementById('lifecycle-name').textContent = step.name;
       document.getElementById('lifecycle-id').textContent = `ID: KS-${step.id.toUpperCase()}`;
       document.getElementById('lifecycle-desc').textContent = step.desc;
@@ -1201,7 +1213,7 @@
       const step = lifecycleData[key];
       const btn = document.createElement('button');
       btn.className = 'lifecycle-node';
-      btn.innerHTML = `<span>${step.icon}</span><div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">${step.name}</div><div style="font-size:0.7rem;color:var(--grey);margin-top:4px">${step.duration}</div>`;
+      btn.innerHTML = `<span>${step.icon}</span><div style="font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase">${step.name}</div><div style="font-size:0.7rem;color:var(--grey-light);margin-top:4px">${step.duration}</div>`;
       btn.addEventListener('click', () => updateLifecycleDetail(key));
       btn.addEventListener('mouseover', () => updateLifecycleDetail(key));
       lifecycleNodesContainer.appendChild(btn);
@@ -1313,7 +1325,7 @@
       btn.innerHTML = `
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
           <span class="region-status">${region.status}</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--grey)">${region.assets}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--grey-light)">${region.assets}</span>
         </div>
         <h3 class="region-name">${region.name}</h3>
         <p class="region-location">${region.location}</p>
