@@ -1570,7 +1570,7 @@
           draw.push({ pr, s, z:(vv[0][2]+vv[1][2]+vv[2][2]+vv[3][2])/4 });
         }
         draw.sort((a,b) => a.z - b.z);                 // farthest first
-        ctx.globalAlpha = 0.66;                         // sit back as a background element
+        ctx.globalAlpha = 0.92;                         // solid, clearly readable pallet
         for (const d of draw) {
           ctx.beginPath();
           ctx.moveTo(d.pr[0][0], d.pr[0][1]);
