@@ -114,7 +114,7 @@
     /* ─── HERO SECTION ──────────────────────────────────────────── */
     #hero {
       position: relative; height: 100dvh;
-      background: linear-gradient(135deg, var(--forest-dark) 0%, #0f2418 100%);
+      background: linear-gradient(180deg, #152018 0%, #1c2820 100%);
       display: flex; flex-direction: column; justify-content: center;
       overflow: hidden;
     }
@@ -134,10 +134,10 @@
     .hero-scrim {
       position: absolute; inset: 0; z-index: 1; pointer-events: none;
       background: linear-gradient(100deg,
-        var(--forest-dark) 0%,
-        rgba(24,50,36,0.82) 30%,
-        rgba(24,50,36,0.28) 55%,
-        rgba(24,50,36,0) 76%);
+        #152018 0%,
+        rgba(21,32,24,0.80) 28%,
+        rgba(21,32,24,0.25) 52%,
+        rgba(21,32,24,0) 74%);
     }
     .hero-content {
       position: relative; z-index: 2;
@@ -1431,160 +1431,111 @@
       btn.disabled = true;
     }
 
-    // ═══ SELF-CONTAINED 3D HERO PALLET (no external libraries) ═════
-    // Software-rendered on a 2D canvas so it works everywhere,
-    // including sandboxed environments that block CDN scripts.
-    (function initHeroPallet() {
+    // ═══ 3D HERO PALLET — raw WebGL, no external libraries ═════════
+    // Real GPU lighting (matches the design's Three.js material/lights)
+    // with zero dependencies, so it works in sandboxed artifacts too.
+    (function initHeroPalletGL() {
       const canvas = document.getElementById('hero-canvas');
-      if (!canvas || !canvas.getContext) return;
-      const ctx = canvas.getContext('2d');
+      if (!canvas) return;
+      const gl = canvas.getContext('webgl', { antialias:true, alpha:true, premultipliedAlpha:false })
+              || canvas.getContext('experimental-webgl', { antialias:true, alpha:true });
+      if (!gl) return;
 
-      // ── Geometry: pallet built from boxes (matches the R3F spec) ──
-      const SCALE = 1.2;
-      const boxes = [];
-      const addBox = (w,h,d,x,y,z) => boxes.push({w,h,d,x,y,z});
-      // 3 stringers run front-to-back (Z) and give the pallet its height
-      [-1.85,0,1.85].forEach(x => addBox(0.45,0.55,4.6, x,0,0));
-      // 5 chunky top deck boards run left-to-right (X) with clean wide gaps
-      [-2.1,-1.05,0,1.05,2.1].forEach(z => addBox(4.7,0.18,0.62, 0,0.365,z));
-      // 3 bottom deck boards (front / centre / back)
-      [-2.1,0,2.1].forEach(z => addBox(4.7,0.18,0.62, 0,-0.365,z));
-
-      const CORNERS = [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]];
-      const FACEDEF = [
-        {idx:[4,5,6,7], n:[0,0,1]},  {idx:[1,0,3,2], n:[0,0,-1]},
-        {idx:[5,1,2,6], n:[1,0,0]},  {idx:[0,4,7,3], n:[-1,0,0]},
-        {idx:[7,6,2,3], n:[0,1,0]},  {idx:[0,1,5,4], n:[0,-1,0]}
-      ];
-      const faces = [];
-      boxes.forEach(b => {
-        const vs = CORNERS.map(c => [
-          (b.x + c[0]*b.w/2)*SCALE,
-          (b.y + c[1]*b.h/2)*SCALE,
-          (b.z + c[2]*b.d/2)*SCALE
-        ]);
-        FACEDEF.forEach(f => faces.push({ v: f.idx.map(i => vs[i]), n: f.n }));
-      });
-
-      // ── Ambient particle field ──
-      const particles = [];
-      for (let i=0;i<70;i++) particles.push([
-        (Math.random()-0.5)*18, (Math.random()-0.5)*13, (Math.random()-0.5)*8 - 3
-      ]);
-
-      // ── Camera + lighting constants ──
-      const CAM = [0,4,8];
-      const camCos = 0.894427, camSin = 0.447214;   // pitch so camera looks at origin
-      const L = [0.408248, 0.816497, 0.408248];      // directional light (5,10,5) normalized
-      const BASE = [212,129,72];                     // copper #D48148
-
-      let mouseX = 0, mouseY = 0;
-      document.addEventListener('mousemove', e => {
-        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-        mouseY = -(e.clientY / window.innerHeight - 0.5) * 2; // +y up, matches R3F mouse
-      });
-
-      let W=0, H=0, cx=0, cy=0, focal=0;
-      function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = canvas.offsetWidth; H = canvas.offsetHeight;
-        canvas.width = Math.max(1, W*dpr); canvas.height = Math.max(1, H*dpr);
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-        cx = W * 0.60; cy = H/2;                       // shift pallet right of the headline
-        focal = (H/2) / Math.tan((45*Math.PI/180)/2); // fov 45°
+      // ── Geometry: 4 stringers + 3 top deck + 3 bottom deck boards ──
+      const data = [];
+      function pushBox(w,h,d,cx,cy,cz){
+        const hx=w/2,hy=h/2,hz=d/2;
+        const c=[[cx-hx,cy-hy,cz-hz],[cx+hx,cy-hy,cz-hz],[cx+hx,cy+hy,cz-hz],[cx-hx,cy+hy,cz-hz],
+                 [cx-hx,cy-hy,cz+hz],[cx+hx,cy-hy,cz+hz],[cx+hx,cy+hy,cz+hz],[cx-hx,cy+hy,cz+hz]];
+        const F=[{i:[4,5,6,7],n:[0,0,1]},{i:[1,0,3,2],n:[0,0,-1]},{i:[5,1,2,6],n:[1,0,0]},
+                 {i:[0,4,7,3],n:[-1,0,0]},{i:[7,6,2,3],n:[0,1,0]},{i:[0,1,5,4],n:[0,-1,0]}];
+        for(const f of F){const [a,b,cc,dd]=f.i;for(const idx of [a,b,cc,a,cc,dd]){
+          data.push(c[idx][0],c[idx][1],c[idx][2], f.n[0],f.n[1],f.n[2]);}}
       }
-      window.addEventListener('resize', resize);
-      resize();
+      [-1.8,-0.6,0.6,1.8].forEach(x => pushBox(0.15,0.4,4, x,0,0));   // stringers
+      [-1.7,0,1.7].forEach(z => pushBox(4,0.05,0.8, 0,0.225,z));       // top deck
+      [-1.7,0,1.7].forEach(z => pushBox(4,0.05,0.8, 0,-0.225,z));      // bottom deck
+      const verts = new Float32Array(data), VCOUNT = verts.length/6;
 
-      const model = (p, cY,sY,cX,sX, fY) => {          // rotate (Y then X) + float
-        const x = p[0]*cY + p[2]*sY;
-        const z = -p[0]*sY + p[2]*cY;
-        const y = p[1];
-        return [x, y*cX - z*sX + fY, y*sX + z*cX];
-      };
-      const rotN = (n, cY,sY,cX,sX) => {               // rotate a normal (no float)
-        const x = n[0]*cY + n[2]*sY;
-        const z = -n[0]*sY + n[2]*cY;
-        const y = n[1];
-        return [x, y*cX - z*sX, y*sX + z*cX];
-      };
-      const view = p => {                              // world → camera space
-        const qx = p[0]-CAM[0], qy = p[1]-CAM[1], qz = p[2]-CAM[2];
-        return [qx, qy*camCos - qz*camSin, qy*camSin + qz*camCos];
-      };
-      const project = v => {                           // camera space → screen
-        const depth = -v[2];
-        return [cx + v[0]*focal/depth, cy - v[1]*focal/depth, depth];
-      };
+      // ── Shaders (ambient + white directional + warm point underglow) ──
+      const VS = 'attribute vec3 aPos; attribute vec3 aNormal;'
+        + 'uniform mat4 uProj, uView, uModel; varying vec3 vNormal, vWorld;'
+        + 'void main(){ vec4 w = uModel*vec4(aPos,1.0); vWorld=w.xyz;'
+        + ' vNormal=normalize(mat3(uModel)*aNormal); gl_Position=uProj*uView*w; }';
+      const FS = 'precision mediump float; varying vec3 vNormal, vWorld; uniform vec3 uBase;'
+        + 'void main(){ vec3 N=normalize(vNormal); vec3 Ld=normalize(vec3(5.0,10.0,5.0));'
+        + ' float dif=max(dot(N,Ld),0.0); float amb=0.4;'
+        + ' vec3 toP=vec3(0.0,-5.0,0.0)-vWorld; float dist=length(toP);'
+        + ' float atten=clamp(1.0-dist/20.0,0.0,1.0);'
+        + ' float pdif=max(dot(N,toP/dist),0.0)*atten; vec3 warm=vec3(0.784,0.439,0.251);'
+        + ' vec3 col=uBase*(amb+dif*0.9)+uBase*warm*pdif; gl_FragColor=vec4(clamp(col,0.0,1.0),1.0); }';
+      function sh(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);return s;}
+      const prog=gl.createProgram();
+      gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));
+      gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));
+      gl.linkProgram(prog);
+      if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) return;
+      gl.useProgram(prog);
 
-      let rotX = 0, rotY = 0, t0 = null;
-      function frame(ts) {
+      const buf=gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+      gl.bufferData(gl.ARRAY_BUFFER,verts,gl.STATIC_DRAW);
+      const aPos=gl.getAttribLocation(prog,'aPos'), aNormal=gl.getAttribLocation(prog,'aNormal');
+      gl.enableVertexAttribArray(aPos); gl.vertexAttribPointer(aPos,3,gl.FLOAT,false,24,0);
+      gl.enableVertexAttribArray(aNormal); gl.vertexAttribPointer(aNormal,3,gl.FLOAT,false,24,12);
+      const uProj=gl.getUniformLocation(prog,'uProj'), uView=gl.getUniformLocation(prog,'uView'),
+            uModel=gl.getUniformLocation(prog,'uModel'), uBase=gl.getUniformLocation(prog,'uBase');
+      gl.uniform3f(uBase, 0.831,0.506,0.282);          // wood #D48148
+      gl.enable(gl.DEPTH_TEST);
+      gl.clearColor(0,0,0,0);
+
+      // ── Matrix helpers (column-major) ──
+      function perspective(fovy,aspect,near,far){const f=1/Math.tan(fovy/2),nf=1/(near-far);
+        return new Float32Array([f/aspect,0,0,0, 0,f,0,0, 0,0,(far+near)*nf,-1, 0,0,2*far*near*nf,0]);}
+      function lookAt(e,c,up){
+        let z0=e[0]-c[0],z1=e[1]-c[1],z2=e[2]-c[2];let zl=1/Math.hypot(z0,z1,z2);z0*=zl;z1*=zl;z2*=zl;
+        let x0=up[1]*z2-up[2]*z1,x1=up[2]*z0-up[0]*z2,x2=up[0]*z1-up[1]*z0;let xl=1/(Math.hypot(x0,x1,x2)||1);x0*=xl;x1*=xl;x2*=xl;
+        let y0=z1*x2-z2*x1,y1=z2*x0-z0*x2,y2=z0*x1-z1*x0;
+        return new Float32Array([x0,y0,z0,0, x1,y1,z1,0, x2,y2,z2,0,
+          -(x0*e[0]+x1*e[1]+x2*e[2]), -(y0*e[0]+y1*e[1]+y2*e[2]), -(z0*e[0]+z1*e[1]+z2*e[2]), 1]);}
+      function mul(a,b){const o=new Float32Array(16);for(let c=0;c<4;c++)for(let r=0;r<4;r++){let s=0;
+        for(let k=0;k<4;k++)s+=a[k*4+r]*b[c*4+k];o[c*4+r]=s;}return o;}
+      function rotY(a){const c=Math.cos(a),s=Math.sin(a);return new Float32Array([c,0,-s,0, 0,1,0,0, s,0,c,0, 0,0,0,1]);}
+      function rotX(a){const c=Math.cos(a),s=Math.sin(a);return new Float32Array([1,0,0,0, 0,c,s,0, 0,-s,c,0, 0,0,0,1]);}
+      function trans(x,y,z){return new Float32Array([1,0,0,0, 0,1,0,0, 0,0,1,0, x,y,z,1]);}
+      function scale(s){return new Float32Array([s,0,0,0, 0,s,0,0, 0,0,s,0, 0,0,0,1]);}
+
+      const CAM=[0,4,8], TARGET=[0,0,0];
+      let W=0,H=0, shiftX=1.4;
+      function resize(){const dpr=Math.min(window.devicePixelRatio||1,2);
+        W=canvas.offsetWidth;H=canvas.offsetHeight;
+        canvas.width=Math.max(1,W*dpr);canvas.height=Math.max(1,H*dpr);
+        gl.viewport(0,0,canvas.width,canvas.height);
+        shiftX = W < 900 ? 0.0 : 1.4;                  // centre on mobile, shift right on desktop
+        gl.uniformMatrix4fv(uProj,false,perspective(45*Math.PI/180, W/H, 0.1, 100));
+        gl.uniformMatrix4fv(uView,false,lookAt(CAM,TARGET,[0,1,0]));}
+      window.addEventListener('resize',resize); resize();
+
+      let mx=0,my=0;
+      window.addEventListener('mousemove', e => {
+        mx=(e.clientX/window.innerWidth)*2-1;
+        my=-(e.clientY/window.innerHeight)*2+1;
+      });
+
+      let rx=0,ry=0,t0=null;
+      function frame(ts){
         requestAnimationFrame(frame);
-        if (canvas.offsetWidth !== W || canvas.offsetHeight !== H) resize();
-        if (!W || !H) return;
-        if (!t0) t0 = ts;
-        const t = (ts - t0)*0.001;
-
-        // Motion layers (same feel as the R3F spec)
-        const floatY = Math.sin(t*0.5)*0.2;            // 1. slow vertical float ±0.2
-        const tX = mouseY*0.2 + Math.sin(t*0.2)*0.1;   // 2. mouse tilt on X + idle sway
-        const tY = mouseX*0.2 + t*0.05;                // 3. spin + mouse steer on Y
-        rotX += (tX - rotX)*0.05;                      //    lerp 0.05 — eased/dreamy
-        rotY += (tY - rotY)*0.05;
-        const cY=Math.cos(rotY), sY=Math.sin(rotY), cX=Math.cos(rotX), sX=Math.sin(rotX);
-
-        ctx.clearRect(0,0,W,H);
-
-        // Particles behind the pallet
-        ctx.fillStyle = 'rgb(200,112,64)';
-        const pc = Math.cos(t*0.025), ps = Math.sin(t*0.025), bob = Math.sin(t*0.1)*0.5;
-        for (const p of particles) {
-          const wx = p[0]*pc + p[2]*ps, wz = -p[0]*ps + p[2]*pc, wy = p[1] + bob;
-          const vv = view([wx,wy,wz]);
-          if (vv[2] >= -0.2) continue;
-          const pr = project(vv);
-          ctx.globalAlpha = Math.max(0.06, Math.min(0.45, 6/pr[2]));
-          ctx.beginPath();
-          ctx.arc(pr[0], pr[1], Math.max(0.5, (focal*0.02)/pr[2]), 0, 6.2832);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-
-        // Transform, cull, shade, depth-sort the pallet faces
-        const draw = [];
-        for (const f of faces) {
-          const nR = rotN(f.n, cY,sY,cX,sX);
-          const wv = f.v.map(p => model(p, cY,sY,cX,sX, floatY));
-          const c = [(wv[0][0]+wv[1][0]+wv[2][0]+wv[3][0])/4,
-                     (wv[0][1]+wv[1][1]+wv[2][1]+wv[3][1])/4,
-                     (wv[0][2]+wv[1][2]+wv[2][2]+wv[3][2])/4];
-          // backface cull
-          if (nR[0]*(CAM[0]-c[0]) + nR[1]*(CAM[1]-c[1]) + nR[2]*(CAM[2]-c[2]) <= 0) continue;
-          const vv = wv.map(view);
-          if (vv[0][2]>=-0.2 || vv[1][2]>=-0.2 || vv[2][2]>=-0.2 || vv[3][2]>=-0.2) continue;
-          const pr = vv.map(project);
-          const lambert = Math.max(0, nR[0]*L[0] + nR[1]*L[1] + nR[2]*L[2]);
-          const rim = Math.max(0, -nR[1])*0.15;        // subtle copper underglow
-          let s = 0.42 + lambert*0.95 + rim;
-          s = s < 0.22 ? 0.22 : (s > 1.35 ? 1.35 : s);
-          draw.push({ pr, s, z:(vv[0][2]+vv[1][2]+vv[2][2]+vv[3][2])/4 });
-        }
-        draw.sort((a,b) => a.z - b.z);                 // farthest first
-        ctx.globalAlpha = 0.92;                         // solid, clearly readable pallet
-        for (const d of draw) {
-          ctx.beginPath();
-          ctx.moveTo(d.pr[0][0], d.pr[0][1]);
-          ctx.lineTo(d.pr[1][0], d.pr[1][1]);
-          ctx.lineTo(d.pr[2][0], d.pr[2][1]);
-          ctx.lineTo(d.pr[3][0], d.pr[3][1]);
-          ctx.closePath();
-          ctx.fillStyle = 'rgb('+ (BASE[0]*d.s|0) +','+ (BASE[1]*d.s|0) +','+ (BASE[2]*d.s|0) +')';
-          ctx.fill();
-          ctx.strokeStyle = 'rgba(0,0,0,0.14)';
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-        ctx.globalAlpha = 1;
+        if(canvas.offsetWidth!==W||canvas.offsetHeight!==H) resize();
+        if(!W||!H) return;
+        if(!t0)t0=ts;
+        const t=(ts-t0)*0.001;
+        const floatY=Math.sin(t*0.5)*0.2;                       // float
+        const tX=my*0.2+Math.sin(t*0.2)*0.1, tY=mx*0.2+t*0.05;  // tilt / spin+steer
+        rx+=(tX-rx)*0.05; ry+=(tY-ry)*0.05;                     // lerp 0.05
+        const model=mul(trans(shiftX,floatY,0), mul(rotX(rx), mul(rotY(ry), scale(1.2))));
+        gl.uniformMatrix4fv(uModel,false,model);
+        gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+        gl.drawArrays(gl.TRIANGLES,0,VCOUNT);
       }
       requestAnimationFrame(frame);
     })();
