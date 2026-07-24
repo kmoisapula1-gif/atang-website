@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kake Sky Solutions — Pallet Lifecycle Management</title>
+  <meta name="description" content="From recovery to recycling, Kake Sky Solutions manages every stage of the pallet lifecycle across Southern Africa's industrial heartland." />
+  <meta property="og:title" content="Kake Sky Solutions" />
+  <meta property="og:description" content="Keeping Industrial Pallets in Circulation — RECOVER · REPAIR · TRACK · MANUFACTURE · RECYCLE" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ─── BRAND TOKENS ─────────────────────────────────────────── */
+    :root {
+      --copper:       #C87040;
+      --copper-dark:  #A35930;
+      --copper-light: #E8956D;
+      --forest-dark:  #183224;
+      --forest-mid:   #234734;
+      --forest-panel: #1e3d2c;
+      --gold:         #C8A25B;
+      --sand:         #F7F6F2;
+      --charcoal:     #1C1C1C;
+      --grey:         #6B7280;
+      --grey-light:   #9CA3AF;
+      --border-light: rgba(200,112,64,0.15);
+      --transition:   all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ─── RESET & BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--sand);
+      color: var(--charcoal);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1,h2,h3,h4,h5 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; display: block; }
+    input, textarea, button { font-family: inherit; }
+    button { cursor: pointer; border: none; background: none; }
+
+    /* ─── LAYOUT ────────────────────────────────────────────────── */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ─── NAVIGATION ────────────────────────────────────────────── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 20px 0;
+      transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #nav.scrolled {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      padding: 14px 0;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      border-bottom-color: rgba(0,0,0,0.05);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      height: 48px; width: auto;
+      filter: brightness(0) invert(1);
+      transition: filter 0.3s;
+    }
+    #nav.scrolled .nav-logo { filter: none; }
+    .nav-links {
+      display: flex; align-items: center; gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.06em;
+      color: rgba(247,246,242,0.85);
+      transition: color 0.2s;
+      font-weight: 500;
+    }
+    #nav.scrolled .nav-links a { color: var(--charcoal); }
+    .nav-links a:hover { color: var(--copper); }
+    .nav-cta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.08em; font-weight: 600;
+      padding: 11px 24px;
+      background: var(--copper); color: #fff;
+      text-transform: uppercase;
+      transition: var(--transition);
+      border-radius: 6px;
+    }
+    .nav-cta:hover {
+      background: var(--copper-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(200,112,64,0.25);
+    }
+    .burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .burger span {
+      display: block; width: 26px; height: 2px;
+      background: #fff; transition: var(--transition);
+    }
+    #nav.scrolled .burger span { background: var(--charcoal); }
+
+    /* ─── HERO ──────────────────────────────────────────────────── */
+    #hero {
+      position: relative; height: 100dvh;
+      background: linear-gradient(135deg, var(--forest-dark) 0%, #0f2418 100%);
+      display: flex; flex-direction: column; justify-content: center;
+      overflow: hidden;
+    }
+    #hero-canvas {
+      position: absolute; inset: 0; z-index: 0;
+      transition: opacity 0.1s;
+    }
+    .hero-grid-overlay {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(247,246,242,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247,246,242,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: space-between; gap: 60px;
+      margin-top: 80px;
+    }
+    .hero-text { max-width: 700px; color: var(--sand); }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 16px;
+      background: rgba(200,112,64,0.15);
+      border: 1px solid rgba(200,112,64,0.4);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.12em; font-weight: 600;
+      color: var(--copper-light); text-transform: uppercase; margin-bottom: 28px;
+      border-radius: 32px;
+    }
+    .hero-badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--copper); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(200,112,64,0.6); }
+      70%  { box-shadow: 0 0 0 10px rgba(200,112,64,0); }
+      100% { box-shadow: 0 0 0 0 rgba(200,112,64,0); }
+    }
+    .hero-h1 {
+      font-size: clamp(2.8rem, 5.5vw, 4.6rem);
+      color: var(--sand); text-transform: uppercase;
+      margin-bottom: 28px; line-height: 1.1;
+    }
+    .hero-h1 em { font-style: italic; color: var(--copper-light); padding-right: 8px; }
+    .hero-sub {
+      font-size: 1.15rem; color: rgba(247,246,242,0.75);
+      max-width: 580px; line-height: 1.8; margin-bottom: 48px;
+      font-weight: 400;
+    }
+    .hero-actions { display: flex; gap: 20px; flex-wrap: wrap; }
+    .btn-copper {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px;
+      background: var(--copper); color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.1em; font-weight: 600;
+      text-transform: uppercase; transition: var(--transition);
+      border-radius: 6px;
+    }
+    .btn-copper:hover {
+      background: var(--copper-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 32px rgba(200,112,64,0.3);
+    }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 32px;
+      border: 1.5px solid rgba(247,246,242,0.35); color: var(--sand);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.1em; font-weight: 600;
+      text-transform: uppercase;
+      transition: var(--transition);
+      border-radius: 6px;
+    }
+    .btn-ghost:hover {
+      background: rgba(247,246,242,0.1);
+      border-color: var(--copper);
+      color: var(--copper-light);
+    }
+    .btn-arrow { font-size: 1rem; transition: transform 0.2s; }
+    .btn-copper:hover .btn-arrow, .btn-ghost:hover .btn-arrow { transform: translateX(4px); }
+
+    /* Status Panel */
+    .status-panel {
+      flex-shrink: 0; width: 320px;
+      background: rgba(0,0,0,0.3); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 28px; border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    .sp-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-bottom: 18px; border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 24px;
+    }
+    .sp-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem; letter-spacing: 0.14em;
+      color: rgba(247,246,242,0.5); text-transform: uppercase;
+    }
+    .sp-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #10b981; animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0%   { box-shadow: 0 0 0 0 rgba(16,185,129,0.6); }
+      70%  { box-shadow: 0 0 0 8px rgba(16,185,129,0); }
+      100% { box-shadow: 0 0 0 0 rgba(16,185,129,0); }
+    }
+    .sp-row { margin-bottom: 18px; }
+    .sp-row-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.62rem; letter-spacing: 0.12em;
+      color: rgba(247,246,242,0.4); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .sp-row-val {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.3rem; font-weight: 600; color: var(--sand);
+    }
+    .sp-row-val.copper { color: var(--copper-light); font-size: 1.1rem; }
+    .sp-row-val.sm { font-size: 0.88rem; display: flex; align-items: center; gap: 6px; }
+
+    /* Process Ticker */
+    .process-ticker {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 14px 0; overflow: hidden;
+    }
+    .ticker-track {
+      display: flex; gap: 60px;
+      white-space: nowrap;
+      animation: ticker 28s linear infinite;
+    }
+    .ticker-track span {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem; letter-spacing: 0.16em; font-weight: 600;
+      color: var(--copper); text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .ticker-track .sep { color: rgba(200,112,64,0.3); }
+    @keyframes ticker {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ─── SECTION COMMON ────────────────────────────────────────── */
+    section { position: relative; z-index: 10; }
+    .section-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.12em; font-weight: 600;
+      color: var(--copper); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .section-tag::before {
+      content: ''; display: block;
+      width: 8px; height: 8px; border-radius: 50%; background: var(--copper);
+    }
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── INDUSTRIES ────────────────────────────────────────────── */
+    #industries { padding: 120px 0; background: var(--sand); }
+    .ind-title {
+      text-align: center; margin-bottom: 70px;
+    }
+    .ind-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.14em;
+      color: var(--copper); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .ind-h2 { font-size: clamp(2rem, 3.2vw, 2.8rem); color: var(--charcoal); }
+    .ind-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+    .ind-card {
+      background: #fff; border: 1px solid rgba(0,0,0,0.05);
+      padding: 40px 20px; text-align: center;
+      transition: var(--transition);
+      cursor: default;
+      border-radius: 10px;
+    }
+    .ind-card:hover {
+      border-color: var(--copper);
+      box-shadow: 0 20px 50px rgba(200,112,64,0.12);
+      transform: translateY(-8px);
+    }
+    .ind-icon {
+      width: 64px; height: 64px;
+      background: var(--sand); display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      transition: var(--transition);
+      border-radius: 8px;
+    }
+    .ind-card:hover .ind-icon {
+      background: var(--copper);
+    }
+    .ind-icon svg { width: 28px; height: 28px; stroke: var(--copper); }
+    .ind-card:hover .ind-icon svg { stroke: #fff; }
+    .ind-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--charcoal); }
+
+    /* ─── WHY KAKE SKY ──────────────────────────────────────────── */
+    #why { padding: 120px 0; background: #fff; border-top: 1px solid rgba(0,0,0,0.05); }
+    .why-head { max-width: 750px; margin-bottom: 70px; }
+    .why-tag {
+      display: inline-block; padding: 8px 16px;
+      background: rgba(0,0,0,0.04);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.12em; font-weight: 600;
+      text-transform: uppercase; color: var(--forest-mid); margin-bottom: 16px;
+      border-radius: 32px;
+    }
+    .why-h2 { font-size: clamp(2.2rem, 3.5vw, 3.2rem); text-transform: uppercase; }
+    .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
+    .why-card {
+      background: var(--sand); padding: 44px 36px;
+      border: 1px solid transparent;
+      position: relative; overflow: hidden;
+      transition: var(--transition);
+      border-radius: 10px;
+    }
+    .why-card:hover {
+      border-color: var(--copper);
+      box-shadow: 0 20px 48px rgba(200,112,64,0.1);
+    }
+    .why-icon { width: 44px; height: 44px; margin-bottom: 32px; color: var(--forest-dark); }
+    .why-card:hover .why-icon { color: var(--copper); }
+    .why-icon svg { width: 44px; height: 44px; stroke: currentColor; transition: var(--transition); }
+    .why-h3 { font-size: 1.2rem; margin-bottom: 14px; color: var(--charcoal); }
+    .why-p { font-size: 0.95rem; color: var(--grey); line-height: 1.8; }
+
+    /* ─── SERVICES ──────────────────────────────────────────────── */
+    #services { padding: 120px 0; background: var(--forest-dark); color: var(--sand); }
+    .svc-head {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 70px; gap: 40px;
+    }
+    .svc-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.12em;
+      color: var(--copper); text-transform: uppercase; margin-bottom: 16px;
+    }
+    .svc-h2 { font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform: uppercase; }
+    .svc-desc { max-width: 420px; color: rgba(247,246,242,0.6); font-size: 0.98rem; line-height: 1.8; }
+    .svc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .svc-card {
+      display: flex;
+      background: var(--forest-panel);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: var(--transition);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .svc-card:hover {
+      border-color: var(--copper);
+      box-shadow: 0 16px 40px rgba(200,112,64,0.15);
+    }
+    .svc-left { padding: 36px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .svc-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.1rem; color: var(--copper); font-weight: 600; margin-bottom: 24px;
+    }
+    .svc-name { font-size: 1.35rem; font-weight: 700; }
+    .svc-terminal {
+      flex: 1; background: rgba(0,0,0,0.3);
+      border-left: 1px solid rgba(255,255,255,0.06);
+      padding: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .term-head {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .term-sys { color: rgba(247,246,242,0.35); }
+    .term-cursor { color: var(--copper); animation: blink 1.2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    .term-row { display: flex; justify-content: space-between; padding: 4px 0; }
+    .term-key { color: rgba(247,246,242,0.4); }
+    .term-val { color: var(--sand); }
+    .term-val.copper { color: var(--copper); }
+
+    /* ─── METRICS ───────────────────────────────────────────────── */
+    #metrics { padding: 100px 0; background: var(--copper); color: #fff; }
+    .metrics-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0;
+    }
+    .metric-cell {
+      text-align: center; padding: 0 40px;
+      border-left: 1px solid rgba(255,255,255,0.2);
+    }
+    .metric-cell:first-child { border-left: none; }
+    .metric-val {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem,5vw,4.2rem); font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 8px;
+    }
+    .metric-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.16em;
+      text-transform: uppercase; color: rgba(255,255,255,0.8);
+    }
+
+    /* ─── LIFECYCLE RING ────────────────────────────────────────── */
+    #lifecycle { padding: 120px 0; background: var(--sand); overflow: hidden; }
+    .lifecycle-center { text-align: center; margin-bottom: 70px; }
+    .lifecycle-h2 { font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform: uppercase; }
+    .ring-wrap {
+      position: relative;
+      width: 480px; height: 480px;
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ring-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      transform: rotate(-90deg);
+    }
+    .ring-bg-circle { fill: none; stroke: #e5e5e5; stroke-width: 2; stroke-dasharray: 8 8; }
+    .ring-arc {
+      fill: none; stroke: var(--copper); stroke-width: 5; stroke-linecap: round;
+      stroke-dasharray: 1318 1318; stroke-dashoffset: 1318;
+      transition: stroke-dashoffset 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .ring-arc.drawn { stroke-dashoffset: 0; }
+    .ring-center {
+      position: relative; z-index: 2;
+      width: 130px; height: 130px; border-radius: 50%;
+      background: #fff; box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ring-center svg { width: 52px; height: 52px; stroke: var(--copper); }
+    .ring-node {
+      position: absolute;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; font-weight: 700;
+      background: #fff; color: var(--charcoal);
+      border: 2px solid var(--copper); padding: 8px 12px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      white-space: nowrap;
+      opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease;
+      transform: scale(0.8);
+      border-radius: 6px;
+    }
+    .ring-node.visible { opacity: 1; transform: scale(1); }
+
+    /* ─── COVERAGE ──────────────────────────────────────────────── */
+    #coverage { padding: 120px 0; background: var(--charcoal); color: #fff; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .coverage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+    .cov-tag {
+      display: inline-block;
+      padding: 8px 16px; background: rgba(255,255,255,0.08);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.12em; font-weight: 600;
+      text-transform: uppercase; color: rgba(255,255,255,0.7);
+      margin-bottom: 24px;
+      border-radius: 32px;
+    }
+    .cov-h2 { font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform: uppercase; margin-bottom: 24px; }
+    .cov-h2 span { color: var(--copper-light); }
+    .cov-p { color: rgba(255,255,255,0.6); font-size: 1.02rem; line-height: 1.8; margin-bottom: 36px; }
+    .cov-list { list-style: none; display: flex; flex-direction: column; gap: 18px; }
+    .cov-list li {
+      display: flex; align-items: center; gap: 14px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: rgba(255,255,255,0.75);
+    }
+    .cov-list li svg { width: 18px; height: 18px; stroke: var(--copper-light); flex-shrink: 0; }
+    .map-box {
+      position: relative; height: 400px;
+      background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .map-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(200,112,64,0.15) 0%, transparent 70%);
+    }
+    .map-svg { width: 280px; height: auto; opacity: 0.2; position: absolute; }
+    .map-dot {
+      position: absolute;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .map-dot-core {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--copper-light); position: relative; z-index: 2;
+    }
+    .map-dot-ring {
+      position: absolute; top: 50%; left: 50%;
+      width: 28px; height: 28px;
+      transform: translate(-50%,-50%);
+      border-radius: 50%; background: var(--copper-light); opacity: 0.25;
+      animation: ping 2s cubic-bezier(0,0,0.2,1) infinite;
+    }
+    @keyframes ping {
+      0%  { transform: translate(-50%,-50%) scale(0.5); opacity: 0.5; }
+      100%{ transform: translate(-50%,-50%) scale(2.2);   opacity: 0; }
+    }
+    .map-dot-label {
+      position: absolute; top: -24px;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; font-weight: 700;
+      color: var(--copper-light); white-space: nowrap; letter-spacing: 0.1em;
+    }
+
+    /* ─── CTA BAND ──────────────────────────────────────────────── */
+    #cta { padding: 100px 0; background: var(--forest-dark); color: var(--sand); }
+    .cta-inner { display: flex; align-items: center; justify-content: space-between; gap: 60px; }
+    .cta-h2 { font-size: clamp(2rem,3vw,2.8rem); max-width: 650px; text-transform: uppercase; line-height: 1.15; }
+    .cta-sub { font-size: 1.02rem; color: rgba(247,246,242,0.65); margin-top: 14px; }
+    .cta-actions { display: flex; gap: 20px; flex-shrink: 0; }
+
+    /* ─── CONTACT ───────────────────────────────────────────────── */
+    #contact { padding: 120px 0; background: var(--sand); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; }
+    .contact-h2 { font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform: uppercase; margin-bottom: 24px; }
+    .contact-p { color: var(--grey); font-size: 1.02rem; line-height: 1.8; margin-bottom: 44px; max-width: 450px; }
+    .contact-detail { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 28px; }
+    .contact-icon {
+      width: 52px; height: 52px; background: #fff;
+      border: 1px solid rgba(0,0,0,0.08);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      border-radius: 8px;
+    }
+    .contact-icon svg { width: 22px; height: 22px; stroke: var(--copper); }
+    .contact-detail-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); margin-bottom: 4px;
+    }
+    .contact-detail-val { font-weight: 600; font-size: 1rem; }
+    .contact-form { background: #fff; padding: 44px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 20px 60px rgba(0,0,0,0.08); border-radius: 10px; }
+    .form-h3 { font-size: 1.5rem; margin-bottom: 32px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+    .form-label {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--grey); font-weight: 600;
+    }
+    .form-input, .form-textarea {
+      width: 100%; background: var(--sand); border: 1px solid rgba(0,0,0,0.08);
+      padding: 14px 16px; font-size: 0.96rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: var(--transition);
+      border-radius: 6px;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--copper);
+      box-shadow: 0 0 0 3px rgba(200,112,64,0.1);
+    }
+    .form-textarea { resize: none; height: 130px; }
+    .form-btn {
+      width: 100%; padding: 14px;
+      background: var(--charcoal); color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem; letter-spacing: 0.12em; font-weight: 600;
+      text-transform: uppercase; cursor: pointer; border: none;
+      transition: var(--transition); margin-top: 8px;
+      border-radius: 6px;
+    }
+    .form-btn:hover {
+      background: var(--copper);
+      transform: translateY(-2px);
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────────────── */
+    footer {
+      background: #0a0a0a; color: rgba(255,255,255,0.5);
+      padding: 64px 0 36px;
+      border-top: 1px solid rgba(200,112,64,0.2);
+    }
+    .footer-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 52px; gap: 32px; }
+    .footer-logo { height: 44px; width: auto; filter: brightness(0) invert(1); opacity: 0.8; }
+    .footer-nav { display: flex; gap: 40px; }
+    .footer-nav a {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
+      letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.4);
+      transition: color 0.2s;
+    }
+    .footer-nav a:hover { color: var(--copper); }
+    .footer-tagline {
+      text-align: center; padding: 28px 0; margin-bottom: 28px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700;
+      color: rgba(255,255,255,0.15); letter-spacing: 0.12em; text-transform: uppercase;
+    }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: rgba(255,255,255,0.3);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { transition: color 0.2s; }
+    .footer-links a:hover { color: #fff; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .status-panel { display: none; }
+      .ind-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .burger { display: flex; }
+      .hero-content { flex-direction: column; }
+      .ind-grid { grid-template-columns: repeat(2, 1fr); }
+      .why-grid { grid-template-columns: 1fr; }
+      .svc-grid { grid-template-columns: 1fr; }
+      .svc-card { flex-direction: column; }
+      .svc-terminal { border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+      .metrics-grid { grid-template-columns: repeat(2,1fr); gap: 40px; }
+      .metric-cell { border-left: none !important; }
+      .ring-wrap { width: 340px; height: 340px; }
+      .coverage-grid { grid-template-columns: 1fr; gap: 60px; }
+      .cta-inner { flex-direction: column; }
+      .cta-actions { flex-wrap: wrap; }
+      .contact-grid { grid-template-columns: 1fr; gap: 60px; }
+      .footer-top { flex-direction: column; text-align: center; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ NAVIGATION ══════════════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="wrap nav-inner">
+      <a href="#">
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;color:#fff;letter-spacing:0.04em;">KS</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#industries">Industries</a></li>
+        <li><a href="#why">Why Kake Sky</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="nav-cta">GET IN TOUCH</a>
+      <div class="burger" id="burger" onclick="toggleMenu()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══ HERO ═════════════════════════════════════════════════════ -->
+  <section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-grid-overlay"></div>
+
+    <div class="wrap hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <div class="hero-badge-dot"></div>
+          Pallet Lifecycle Management
+        </div>
+        <h1 class="hero-h1">
+          Keeping Industrial<br/>
+          <em>Pallets</em> In Circulation
+        </h1>
+        <p class="hero-sub">
+          From recovery to recycling, Kake Sky Solutions manages every stage of the pallet lifecycle across Southern Africa's industrial heartland.
+        </p>
+        <div class="hero-actions">
+          <a href="#services" class="btn-copper">OUR SERVICES <span class="btn-arrow">→</span></a>
+          <a href="#contact"  class="btn-ghost">GET IN TOUCH <span class="btn-arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- Live Status Panel -->
+      <div class="status-panel">
+        <div class="sp-head">
+          <span class="sp-label">ASSET TRACKING LIVE</span>
+          <div class="sp-dot"></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-label">Pallets in System</div>
+          <div class="sp-row-val">14,284</div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-label">Recovery Rate</div>
+          <div class="sp-row-val copper">94.2%</div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-row-label">Active Route</div>
+          <div class="sp-row-val sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#E8956D" stroke-width="1.5" style="width:16px;height:16px"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            GAUTENG → KZN
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Process Ticker -->
+    <div class="process-ticker">
+      <div class="ticker-track" aria-hidden="true">
+        <span>01 RECOVER</span><span class="sep">→</span>
+        <span>02 REPAIR</span><span class="sep">→</span>
+        <span>03 TRACK</span><span class="sep">→</span>
+        <span>04 REDEPLOY</span><span class="sep">→</span>
+        <span>05 MANUFACTURE</span><span class="sep">→</span>
+        <span>06 RECYCLE</span>
+        <span>01 RECOVER</span><span class="sep">→</span>
+        <span>02 REPAIR</span><span class="sep">→</span>
+        <span>03 TRACK</span><span class="sep">→</span>
+        <span>04 REDEPLOY</span><span class="sep">→</span>
+        <span>05 MANUFACTURE</span><span class="sep">→</span>
+        <span>06 RECYCLE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ INDUSTRIES ═══════════════════════════════════════════════ -->
+  <section id="industries">
+    <div class="wrap">
+      <div class="ind-title reveal">
+        <div class="ind-subtitle">Trusted Across Sectors</div>
+        <h2 class="ind-h2">Supporting Southern Africa's Heavy Industries</h2>
+      </div>
+      <div class="ind-grid">
+        <div class="ind-card reveal">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21V9L8 6v3l5-3v3l5-3v15H3z"/><path d="M3 21h18"/></svg>
+          </div>
+          <div class="ind-name">Cement &amp; Bagged Products</div>
+        </div>
+        <div class="ind-card reveal" style="transition-delay:0.1s">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21V11l9-7 9 7v10H3z"/><path d="M9 21v-6h6v6"/></svg>
+          </div>
+          <div class="ind-name">Construction &amp; Building Retail</div>
+        </div>
+        <div class="ind-card reveal" style="transition-delay:0.2s">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M14 4l6 6M17 7L7 17l-3-3L14 4zM4 20l3-3"/></svg>
+          </div>
+          <div class="ind-name">Mining &amp; Consumables</div>
+        </div>
+        <div class="ind-card reveal" style="transition-delay:0.3s">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><path d="M3 21V10l6 3v-3l6 3v-3l6 3v11H3z"/><path d="M7 21v-4M12 21v-4M17 21v-4"/></svg>
+          </div>
+          <div class="ind-name">Manufacturing &amp; FMCG</div>
+        </div>
+        <div class="ind-card reveal" style="transition-delay:0.4s">
+          <div class="ind-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+          </div>
+          <div class="ind-name">Warehousing &amp; Distribution</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ WHY KAKE SKY ══════════════════════════════════════════════ -->
+  <section id="why">
+    <div class="wrap">
+      <div class="why-head reveal">
+        <div class="why-tag">WHY KAKE SKY</div>
+        <h2 class="why-h2">Built for industrial supply chains</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2L20 5v6c0 5.5-3.5 9.5-8 11C7.5 20.5 4 16.5 4 11V5z"/><path d="M9 12l2.2 2.2L15.5 9.5"/></svg>
+          </div>
+          <h3 class="why-h3">Reduced Disruption</h3>
+          <p class="why-p">Consistent collections and dependable turnaround keep pallets flowing. We prevent bottlenecks at your loading bays and keep your lines supplied.</p>
+        </div>
+        <div class="why-card reveal" style="transition-delay:0.15s">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12C4.5 7 8 4.5 12 4.5S19.5 7 22 12c-2.5 5-6 7.5-10 7.5S4.5 17 2 12z"/></svg>
+          </div>
+          <h3 class="why-h3">Pallet Visibility</h3>
+          <p class="why-p">RFID-ready tracking and full reconciliation — nothing moves without a record. Know exactly where every asset is across your entire network.</p>
+        </div>
+        <div class="why-card reveal" style="transition-delay:0.3s">
+          <div class="why-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M2 12a10 10 0 1020 0 10 10 0 00-20 0"/><path d="M12 8v4l3 3"/><path d="M18 12l2-2-2-2M6 12l-2 2 2 2"/></svg>
+          </div>
+          <h3 class="why-h3">Circular Economy</h3>
+          <p class="why-p">Recovering timber from end-of-life pallets as biomass, mulch, and chips. Zero waste to landfill — every board earns its next life.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICES ══════════════════════════════════════════════════ -->
+  <section id="services">
+    <div class="wrap">
+      <div class="svc-head reveal">
+        <div>
+          <div class="svc-tag">Six Connected Capabilities</div>
+          <h2 class="svc-h2">One Lifecycle.<br/>Six Services.</h2>
+        </div>
+        <p class="svc-desc">We manage the entire physical journey of a pallet — maximum utility, strict compliance, and optimal material recovery.</p>
+      </div>
+      <div class="svc-grid">
+        <div class="svc-card reveal">
+          <div class="svc-left">
+            <div class="svc-num">01.</div>
+            <div class="svc-name">Asset Recovery &amp; Retrieval</div>
+          </div>
+          <div class="svc-terminal">
+            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-4481</span></div>
+            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">DEPOT_ZA</span></div>
+            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">COLLECTION EN ROUTE</span></div>
+          </div>
+        </div>
+        <div class="svc-card reveal" style="transition-delay:0.1s">
+          <div class="svc-left">
+            <div class="svc-num">02.</div>
+            <div class="svc-name">Repair &amp; Refurbishment</div>
+          </div>
+          <div class="svc-terminal">
+            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-2290</span></div>
+            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">REPAIR_HUB</span></div>
+            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">GRADE A CERTIFIED</span></div>
+          </div>
+        </div>
+        <div class="svc-card reveal" style="transition-delay:0.2s">
+          <div class="svc-left">
+            <div class="svc-num">03.</div>
+            <div class="svc-name">Reverse Logistics</div>
+          </div>
+          <div class="svc-terminal">
+            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-7710</span></div>
+            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">ROUTE_WC</span></div>
+            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">NETWORK OPTIMIZED</span></div>
+          </div>
+        </div>
+        <div class="svc-card reveal" style="transition-delay:0.3s">
+          <div class="svc-left">
+            <div class="svc-num">04.</div>
+            <div class="svc-name">Tracking &amp; Traceability</div>
+          </div>
+          <div class="svc-terminal">
+            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-0093</span></div>
+            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">HUB_MIDRAND</span></div>
+            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">RFID SCANNED</span></div>
+          </div>
+        </div>
+        <div class="svc-card reveal" style="transition-delay:0.4s">
+          <div class="svc-left">
+            <div class="svc-num">05.</div>
+            <div class="svc-name">Pallet Manufacturing</div>
+          </div>
+          <div class="svc-terminal">
+            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-5520</span></div>
+            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">MILL_ZA</span></div>
+            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">TIMBER MILLED</span></div>
+          </div>
+        </div>
+        <div class="svc-card reveal" style="transition-delay:0.5s">
+          <div class="svc-left">
+            <div class="svc-num">06.</div>
+            <div class="svc-name">Recycling &amp; Material Recovery</div>
+          </div>
+          <div class="svc-terminal">
+            <div class="term-head"><span class="term-sys">SYS_LOG</span><span class="term-cursor">_</span></div>
+            <div class="term-row"><span class="term-key">ID:</span><span class="term-val">KKS-8834</span></div>
+            <div class="term-row"><span class="term-key">LOC:</span><span class="term-val">RECOVERY_CTN</span></div>
+            <div class="term-row"><span class="term-key">STATUS:</span><span class="term-val copper">BIOMASS CONVERTED</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ METRICS ════════════════════════════════════════════════════ -->
+  <section id="metrics">
+    <div class="wrap">
+      <div class="metrics-grid">
+        <div class="metric-cell reveal">
+          <div class="metric-val" data-count="14000" data-suffix="+">0</div>
+          <div class="metric-label">Pallets Tracked</div>
+        </div>
+        <div class="metric-cell reveal" style="transition-delay:0.1s">
+          <div class="metric-val" data-count="94" data-suffix="%">0</div>
+          <div class="metric-label">Recovery Rate</div>
+        </div>
+        <div class="metric-cell reveal" style="transition-delay:0.2s">
+          <div class="metric-val">6</div>
+          <div class="metric-label">Service Stages</div>
+        </div>
+        <div class="metric-cell reveal" style="transition-delay:0.3s">
+          <div class="metric-val">24/7</div>
+          <div class="metric-label">Network Coverage</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ LIFECYCLE RING ═════════════════════════════════════════════ -->
+  <section id="lifecycle">
+    <div class="wrap">
+      <div class="lifecycle-center reveal">
+        <div class="section-tag">The Recovery Cycle</div>
+        <h2 class="lifecycle-h2">A closed-loop system</h2>
+        <p style="color:var(--grey);margin-top:14px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.8;font-size:1.02rem">
+          Assets stay in circulation, visible at every stage — nothing leaves the cycle unaccounted for.
+        </p>
+      </div>
+      <div class="ring-wrap" id="ringWrap">
+        <svg class="ring-svg" viewBox="0 0 460 460">
+          <circle class="ring-bg-circle" cx="230" cy="230" r="210"/>
+          <circle class="ring-arc" id="ringArc" cx="230" cy="230" r="210"/>
+        </svg>
+        <div class="ring-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5">
+            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+            <path d="M3.3 7l8.7 5 8.7-5M12 22V12"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COVERAGE ══════════════════════════════════════════════════ -->
+  <section id="coverage">
+    <div class="wrap coverage-grid">
+      <div class="reveal">
+        <div class="cov-tag">Regional Coverage</div>
+        <h2 class="cov-h2">Southern Africa's<br/><span>Industrial Heartland</span></h2>
+        <p class="cov-p">Operating structured collection routes across major industrial nodes. We ensure distance never compromises asset recovery.</p>
+        <ul class="cov-list">
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Gauteng Manufacturing Hub
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            KZN Ports &amp; Distribution
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Western Cape Logistics
+          </li>
+          <li>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Mpumalanga Heavy Industry
+          </li>
+        </ul>
+      </div>
+      <div class="reveal map-box" style="transition-delay:0.2s">
+        <div class="map-glow"></div>
+        <svg class="map-svg" viewBox="0 0 100 120" fill="none" stroke="white" stroke-width="0.5">
+          <path d="M38 8 L62 8 L75 20 L80 38 L78 55 L68 70 L62 90 L55 110 L45 110 L38 90 L32 70 L22 55 L20 38 L25 20 Z"/>
+          <path d="M55 110 L60 118 L45 118 L50 110"/>
+        </svg>
+        <div class="map-dot" style="top:35%;left:62%">
+          <div class="map-dot-ring"></div>
+          <div class="map-dot-core"></div>
+          <div class="map-dot-label">GAUTENG</div>
+        </div>
+        <div class="map-dot" style="top:55%;left:72%">
+          <div class="map-dot-ring" style="animation-delay:0.4s"></div>
+          <div class="map-dot-core" style="background:var(--gold);width:9px;height:9px"></div>
+          <div class="map-dot-label" style="color:var(--gold)">KZN</div>
+        </div>
+        <div class="map-dot" style="top:80%;left:30%">
+          <div class="map-dot-ring" style="animation-delay:0.8s"></div>
+          <div class="map-dot-core" style="background:var(--gold);width:9px;height:9px"></div>
+          <div class="map-dot-label" style="color:var(--gold)">CAPE TOWN</div>
+        </div>
+        <div class="map-dot" style="top:42%;left:70%">
+          <div class="map-dot-ring" style="animation-delay:1.2s"></div>
+          <div class="map-dot-core" style="background:var(--gold);width:8px;height:8px"></div>
+          <div class="map-dot-label" style="color:var(--gold)">MPU</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CTA BAND ══════════════════════════════════════════════════ -->
+  <section id="cta">
+    <div class="wrap cta-inner">
+      <div class="reveal">
+        <h2 class="cta-h2">Reduce pallet losses. Extend asset life. Improve visibility.</h2>
+        <p class="cta-sub">Talk to Kake Sky about managing your pallets across their entire lifecycle.</p>
+      </div>
+      <div class="cta-actions reveal" style="transition-delay:0.2s">
+        <a href="#contact" class="btn-copper">REQUEST CONSULTATION →</a>
+        <a href="#contact" class="btn-ghost">LEARN MORE</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ════════════════════════════════════════════════════ -->
+  <section id="contact">
+    <div class="wrap contact-grid">
+      <div class="reveal">
+        <h2 class="contact-h2">Let's talk about<br/>your pallets</h2>
+        <p class="contact-p">Speak to our operations team about implementing a closed-loop pallet management system for your supply chain.</p>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Headquarters</div>
+            <div class="contact-detail-val">Johannesburg, South Africa</div>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Operations</div>
+            <div class="contact-detail-val">+27 (0) 11 000 0000</div>
+          </div>
+        </div>
+
+        <div class="contact-detail">
+          <div class="contact-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div>
+            <div class="contact-detail-label">Inquiries</div>
+            <div class="contact-detail-val">operations@kakesky.co.za</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form reveal" style="transition-delay:0.2s">
+        <h3 class="form-h3">Quick Assessment</h3>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div>
+              <div class="form-label">First Name</div>
+              <input type="text" class="form-input" placeholder="John" />
+            </div>
+            <div>
+              <div class="form-label">Last Name</div>
+              <input type="text" class="form-input" placeholder="Smith" />
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-label">Company / Industry</div>
+            <input type="text" class="form-input" placeholder="Acme Manufacturing" />
+          </div>
+          <div class="form-group">
+            <div class="form-label">Email Address</div>
+            <input type="email" class="form-input" placeholder="john@company.co.za" />
+          </div>
+          <div class="form-group">
+            <div class="form-label">Message / Pallet Volume</div>
+            <textarea class="form-textarea" placeholder="Tell us about your pallet operations..."></textarea>
+          </div>
+          <button type="submit" class="form-btn">SUBMIT INQUIRY</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="wrap">
+      <div class="footer-top">
+        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:rgba(255,255,255,0.6);letter-spacing:0.06em;">KAKE SKY SOLUTIONS</span>
+        <nav class="footer-nav">
+          <a href="#services">Services</a>
+          <a href="#industries">Industries</a>
+          <a href="#why">Why Us</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-tagline">RECOVER · REPAIR · TRACK · MANUFACTURE · RECYCLE</div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="year"></span> Kake Sky Solutions. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ─── Nav scroll ────────────────────────────────────────────────── */
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    /* ─── Mobile menu ───────────────────────────────────────────────── */
+    function toggleMenu() {
+      document.getElementById('mobileMenu')?.classList.toggle('open');
+    }
+
+    /* ─── Scroll reveal ─────────────────────────────────────────────── */
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* ─── Metrics counter ───────────────────────────────────────────── */
+    function animCount(el) {
+      const target = parseInt(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const dur = 2500, fps = 60, frames = dur / (1000 / fps);
+      let frame = 0;
+      const tick = () => {
+        frame++;
+        const progress = frame / frames;
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const val = Math.round(ease * target);
+        el.textContent = val.toLocaleString() + suffix;
+        if (frame < frames) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+    const countObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting && e.target.dataset.count) {
+          animCount(e.target); countObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('[data-count]').forEach(el => countObs.observe(el));
+
+    /* ─── Lifecycle ring ────────────────────────────────────────────── */
+    const ringNodes = ['RECOVER','REPAIR','TRACK','REDEPLOY','MANUFACTURE','RECYCLE'];
+    const ringWrap = document.getElementById('ringWrap');
+    ringNodes.forEach((label, i) => {
+      const angle = (i * 60 - 90) * (Math.PI / 180);
+      const r = 210;
+      const wrapR = ringWrap.offsetWidth / 2;
+      const pxR = wrapR * (r / 230);
+      const x = Math.cos(angle) * pxR;
+      const y = Math.sin(angle) * pxR;
+      const node = document.createElement('div');
+      node.className = 'ring-node';
+      node.textContent = label;
+      node.style.left = '50%';
+      node.style.top = '50%';
+      node.style.transform = `translate(calc(${x}px - 50%), calc(${y}px - 50%))`;
+      node.style.transitionDelay = `${i * 0.12}s`;
+      ringWrap.appendChild(node);
+    });
+
+    const arc = document.getElementById('ringArc');
+    const ringObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          arc.classList.add('drawn');
+          document.querySelectorAll('.ring-node').forEach(n => n.classList.add('visible'));
+        }
+      });
+    }, { threshold: 0.3 });
+    ringObs.observe(ringWrap);
+
+    /* ─── Form submit ───────────────────────────────────────────────── */
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('.form-btn');
+      btn.textContent = 'SUBMITTED — THANK YOU!';
+      btn.style.background = 'var(--forest-mid)';
+      btn.disabled = true;
+    }
+
+    /* ─── THREE.JS HERO ──────────────────────────────────────────── */
+    (function initThreeHero() {
+      const canvas = document.getElementById('hero-canvas');
+      if (!canvas || typeof THREE === 'undefined') return;
+
+      let renderer, scene, camera, pallet, particles;
+      let mouseX = 0, mouseY = 0;
+
+      try {
+        renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      } catch (e) {
+        return;
+      }
+
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+      renderer.setClearColor(0x000000, 0);
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, canvas.offsetWidth / canvas.offsetHeight, 0.1, 200);
+      camera.position.set(0, 4, 9);
+      camera.lookAt(0, 0, 0);
+
+      scene.add(new THREE.AmbientLight(0x234734, 0.8));
+      const dirLight = new THREE.DirectionalLight(0xf7f6f2, 1.6);
+      dirLight.position.set(5, 10, 5);
+      scene.add(dirLight);
+      const rimLight = new THREE.PointLight(0xC87040, 10, 30);
+      rimLight.position.set(0, -6, 0);
+      scene.add(rimLight);
+
+      const woodMat = new THREE.MeshStandardMaterial({ color: 0xD48148, roughness: 0.7, metalness: 0.15 });
+      pallet = new THREE.Group();
+
+      const addBox = (w, h, d, x, y, z) => {
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), woodMat);
+        mesh.position.set(x, y, z);
+        pallet.add(mesh);
+      };
+      [-1.8, -0.6, 0.6, 1.8].forEach(x => addBox(0.18, 0.45, 4.2, x, 0, 0));
+      [-1.8, 0, 1.8].forEach(z => addBox(4.2, 0.08, 0.85, 0, 0.265, z));
+      [-1.8, 0, 1.8].forEach(z => addBox(4.2, 0.08, 0.85, 0, -0.265, z));
+
+      pallet.scale.set(1.1, 1.1, 1.1);
+      scene.add(pallet);
+
+      const COUNT = 450;
+      const pos = new Float32Array(COUNT * 3);
+      for (let i = 0; i < COUNT; i++) {
+        pos[i*3]   = (Math.random() - 0.5) * 16;
+        pos[i*3+1] = (Math.random() - 0.5) * 14;
+        pos[i*3+2] = (Math.random() - 0.5) * 10 - 5;
+      }
+      const pGeo = new THREE.BufferGeometry();
+      pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      const pMat = new THREE.PointsMaterial({ color: 0xC87040, size: 0.06, sizeAttenuation: true, transparent: true, opacity: 0.6 });
+      particles = new THREE.Points(pGeo, pMat);
+      scene.add(particles);
+
+      document.addEventListener('mousemove', e => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      const resize = () => {
+        const w = canvas.offsetWidth, h = canvas.offsetHeight;
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+      };
+      window.addEventListener('resize', resize);
+
+      let t0 = null;
+      const animate = (ts) => {
+        requestAnimationFrame(animate);
+        if (!t0) t0 = ts;
+        const t = (ts - t0) * 0.001;
+
+        pallet.position.y = Math.sin(t * 0.5) * 0.24;
+        const tx = mouseY * 0.2 + Math.sin(t * 0.22) * 0.1;
+        const ty = mouseX * 0.2 + t * 0.05;
+        pallet.rotation.x += (tx - pallet.rotation.x) * 0.06;
+        pallet.rotation.y += (ty - pallet.rotation.y) * 0.06;
+
+        particles.rotation.y = t * 0.025;
+        particles.position.y = Math.sin(t * 0.1) * 0.5;
+
+        renderer.render(scene, camera);
+      };
+      requestAnimationFrame(animate);
+    })();
+  </script>
+</body>
+</html>
