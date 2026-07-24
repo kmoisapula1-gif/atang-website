@@ -69,12 +69,15 @@
       display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
     }
     .nav-logo {
-      font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem;
-      color:#fff; letter-spacing:0.04em; cursor: pointer;
-      transition: color 0.3s;
+      display:flex; align-items:center; gap:10px; cursor:pointer;
     }
-    #nav.scrolled .nav-logo { color: var(--charcoal); }
-    .nav-logo:hover { color: var(--copper); }
+    .nav-logo .brand-mark { width:30px; height:auto; flex-shrink:0; }
+    .nav-logo .brand-word {
+      font-family:'Syne',sans-serif; font-weight:800; font-size:1.15rem;
+      color:#fff; letter-spacing:0.04em; transition:color 0.3s;
+    }
+    #nav.scrolled .nav-logo .brand-word { color: var(--charcoal); }
+    .nav-logo:hover .brand-word { color: var(--copper); }
 
     .nav-tabs {
       display: flex; align-items: center; gap: 8px; list-style: none; flex-wrap: wrap;
@@ -113,7 +116,7 @@
       position: relative; height: 100dvh;
       background: linear-gradient(135deg, var(--forest-dark) 0%, #0f2418 100%);
       display: flex; flex-direction: column; justify-content: center;
-      overflow: hidden; margin-top: 80px;
+      overflow: hidden;
     }
     #hero-canvas {
       position: absolute; inset: 0; z-index: 0;
@@ -126,6 +129,15 @@
         linear-gradient(rgba(247,246,242,0.02) 1px, transparent 1px),
         linear-gradient(90deg, rgba(247,246,242,0.02) 1px, transparent 1px);
       background-size: 40px 40px;
+    }
+    /* Darkens the left where the headline sits, fades to reveal the pallet on the right */
+    .hero-scrim {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background: linear-gradient(100deg,
+        var(--forest-dark) 0%,
+        rgba(24,50,36,0.82) 30%,
+        rgba(24,50,36,0.28) 55%,
+        rgba(24,50,36,0) 76%);
     }
     .hero-content {
       position: relative; z-index: 2;
@@ -668,7 +680,29 @@
   <!-- ═══ NAVIGATION ══════════════════════════════════════════════ -->
   <nav id="nav">
     <div class="wrap nav-inner">
-      <div class="nav-logo" onclick="goPage('home')">KS</div>
+      <div class="nav-logo" onclick="goPage('home')">
+        <svg class="brand-mark" viewBox="0 0 120 105" aria-hidden="true">
+          <defs>
+            <linearGradient id="kwood" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#E4986B"/>
+              <stop offset="0.5" stop-color="#C87040"/>
+              <stop offset="1" stop-color="#9A5027"/>
+            </linearGradient>
+            <clipPath id="karch"><path d="M20,98 C20,54 34,24 60,13 C86,24 100,54 100,98 Z"/></clipPath>
+          </defs>
+          <path d="M20,98 C20,54 34,24 60,13 C86,24 100,54 100,98 Z" fill="url(#kwood)"/>
+          <g clip-path="url(#karch)" stroke="rgba(58,24,8,0.32)" stroke-width="2">
+            <line x1="8" y1="33" x2="112" y2="33"/>
+            <line x1="8" y1="48" x2="112" y2="48"/>
+            <line x1="8" y1="63" x2="112" y2="63"/>
+            <line x1="8" y1="78" x2="112" y2="78"/>
+            <line x1="8" y1="90" x2="112" y2="90"/>
+          </g>
+          <polygon points="60,30 46,51 54,51 54,84 66,84 66,51 74,51" fill="#fff"/>
+          <circle cx="60" cy="91" r="3" fill="#183224"/>
+        </svg>
+        <span class="brand-word">KAKE SKY</span>
+      </div>
       <ul class="nav-tabs">
         <li><a class="nav-link active" data-page="home">Home</a></li>
         <li><a class="nav-link" data-page="industries">Industries</a></li>
@@ -688,6 +722,7 @@
     <section id="hero">
       <canvas id="hero-canvas"></canvas>
       <div class="hero-grid-overlay"></div>
+      <div class="hero-scrim"></div>
 
       <div class="wrap hero-content">
         <div class="hero-text">
@@ -1093,7 +1128,23 @@
   <footer>
     <div class="wrap">
       <div class="footer-top">
-        <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:rgba(255,255,255,0.6);letter-spacing:0.06em;">KAKE SKY SOLUTIONS</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <svg viewBox="0 0 120 105" style="width:30px;height:auto" aria-hidden="true">
+            <defs>
+              <linearGradient id="kwoodf" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#E4986B"/><stop offset="0.5" stop-color="#C87040"/><stop offset="1" stop-color="#9A5027"/>
+              </linearGradient>
+              <clipPath id="karchf"><path d="M20,98 C20,54 34,24 60,13 C86,24 100,54 100,98 Z"/></clipPath>
+            </defs>
+            <path d="M20,98 C20,54 34,24 60,13 C86,24 100,54 100,98 Z" fill="url(#kwoodf)"/>
+            <g clip-path="url(#karchf)" stroke="rgba(58,24,8,0.32)" stroke-width="2">
+              <line x1="8" y1="33" x2="112" y2="33"/><line x1="8" y1="48" x2="112" y2="48"/><line x1="8" y1="63" x2="112" y2="63"/><line x1="8" y1="78" x2="112" y2="78"/><line x1="8" y1="90" x2="112" y2="90"/>
+            </g>
+            <polygon points="60,30 46,51 54,51 54,84 66,84 66,51 74,51" fill="#fff"/>
+            <circle cx="60" cy="91" r="3" fill="#183224"/>
+          </svg>
+          <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:rgba(255,255,255,0.6);letter-spacing:0.06em;">KAKE SKY SOLUTIONS</span>
+        </div>
         <nav class="footer-nav">
           <a onclick="goPage('home')">Home</a>
           <a onclick="goPage('services')">Services</a>
@@ -1436,7 +1487,7 @@
         W = canvas.offsetWidth; H = canvas.offsetHeight;
         canvas.width = Math.max(1, W*dpr); canvas.height = Math.max(1, H*dpr);
         ctx.setTransform(dpr,0,0,dpr,0,0);
-        cx = W/2; cy = H/2;
+        cx = W * 0.60; cy = H/2;                       // shift pallet right of the headline
         focal = (H/2) / Math.tan((45*Math.PI/180)/2); // fov 45°
       }
       window.addEventListener('resize', resize);
