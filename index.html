@@ -444,6 +444,23 @@
     .ind-card:hover .ind-icon svg { stroke: #fff; }
     .ind-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; color: var(--charcoal); }
 
+    /* ─── SECTOR BAND (under hero, replaces Industries page) ───────── */
+    .sector-band { padding: 84px 0; background: var(--sand); border-top: 1px solid rgba(0,0,0,0.05); }
+
+    /* ─── ABOUT PAGE ───────────────────────────────────────────────── */
+    #about-page { background: #fff; }
+    .about-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .about-block { background: var(--sand); border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; padding: 38px 32px; transition: var(--transition); }
+    .about-block:hover { border-color: var(--copper); box-shadow: 0 20px 48px rgba(200,112,64,0.1); }
+    .about-num { font-family: 'IBM Plex Mono', monospace; font-size: 0.8rem; font-weight: 600; color: var(--copper); display: block; margin-bottom: 18px; }
+    .about-block h3 { font-size: 1.25rem; color: var(--charcoal); margin-bottom: 14px; }
+    .about-block p { font-size: 0.95rem; line-height: 1.8; color: var(--grey); }
+    .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .about-cta { margin-top: 84px; text-align: center; background: linear-gradient(135deg, var(--forest-dark), #0f2418); border-radius: 16px; padding: 60px 40px; }
+    .about-cta p { max-width: 640px; margin: 0 auto 28px; font-size: 1.05rem; line-height: 1.8; color: rgba(247,246,242,0.82); }
+    @media (max-width: 1024px) { .values-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } .values-grid { grid-template-columns: 1fr; } }
+
     /* ─── WHY SECTION ───────────────────────────────────────────── */
     #why-page { background: #fff; border-top: 1px solid rgba(0,0,0,0.05); }
     .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 40px; }
@@ -799,7 +816,7 @@
       </div>
       <ul class="nav-tabs">
         <li><a class="nav-link active" data-page="home">Home</a></li>
-        <li><a class="nav-link" data-page="industries">Industries</a></li>
+        <li><a class="nav-link" data-page="about">About</a></li>
         <li><a class="nav-link" data-page="why">Why Kake Sky</a></li>
         <li><a class="nav-link" data-page="services">Services</a></li>
         <li><a class="nav-link" data-page="lifecycle">Lifecycle</a></li>
@@ -913,15 +930,13 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- ═══ INDUSTRIES PAGE ═════════════════════════════════════════════════ -->
-  <div id="page-industries" class="page">
-    <section id="industries-page">
+    <!-- Sector band (moved from the Industries page) -->
+    <section class="sector-band">
       <div class="wrap">
-        <div class="page-header reveal">
-          <div class="section-tag" style="justify-content:center;display:flex">Trusted Across Sectors</div>
-          <h2 style="font-size: clamp(2rem, 3.2vw, 2.8rem); color: var(--charcoal); margin-bottom: 16px;">Supporting Southern Africa's Heavy Industries</h2>
+        <div class="page-header reveal" style="margin-bottom:36px">
+          <div class="section-tag" style="justify-content:center;display:flex">Built for high-loss industries</div>
+          <h2 style="font-size: clamp(1.7rem, 3vw, 2.4rem); color: var(--charcoal); margin-bottom: 12px;">Where pallets go missing — and money leaks out</h2>
         </div>
         <div class="ind-grid">
           <div class="ind-card reveal">
@@ -944,6 +959,69 @@
             <div class="ind-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.4"><rect x="1" y="3" width="15" height="13"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
             <div class="ind-name">Warehousing &amp; Distribution</div>
           </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- ═══ ABOUT PAGE ══════════════════════════════════════════════ -->
+  <div id="page-about" class="page">
+    <section id="about-page">
+      <div class="wrap">
+        <div class="page-header reveal">
+          <div class="section-tag" style="justify-content:center;display:flex">Our Story</div>
+          <h2 style="font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform:uppercase; margin-bottom: 16px;">A Modern Fix For A Costly, Overlooked Problem</h2>
+          <p style="color:var(--grey);font-size:1.05rem;line-height:1.8;max-width:660px;margin:0 auto">Wooden pallets move nearly everything — yet almost no one manages them. Kake Sky is a technology-driven company built to change that.</p>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-block reveal">
+            <span class="about-num">01 — The Problem</span>
+            <h3>An invisible, expensive leak</h3>
+            <p>Across cement, construction, mining and FMCG, pallets vanish on job sites, pile up as waste, and get quietly written off at 15–25% a year. It's a timber, cost and carbon problem hiding in plain sight — and most operations have no idea where their assets actually are.</p>
+          </div>
+          <div class="about-block reveal" style="transition-delay:0.12s">
+            <span class="about-num">02 — Our Approach</span>
+            <h3>Pallets as tracked assets</h3>
+            <p>We treat every pallet as a recoverable asset, not a disposable. RFID and IoT tracking, automated field recovery, and closed-loop refurbishment keep units in circulation longer — so nothing is lost to guesswork, and nothing that can be reused goes to landfill.</p>
+          </div>
+          <div class="about-block reveal" style="transition-delay:0.24s">
+            <span class="about-num">03 — Where We're Headed</span>
+            <h3>Launching hub by hub</h3>
+            <p>We're early-stage and deliberately focused: Gauteng and KwaZulu-Natal first, with a phased national rollout to follow. Right now we're onboarding a limited group of pilot partners to prove the model in the field — with the data to back it up.</p>
+          </div>
+        </div>
+
+        <div class="page-header reveal" style="margin-top:100px">
+          <div class="section-tag" style="justify-content:center;display:flex">What We Stand For</div>
+          <h2 style="font-size: clamp(1.8rem,3vw,2.6rem); color: var(--charcoal); margin-bottom: 12px;">Principles, not promises</h2>
+        </div>
+        <div class="values-grid">
+          <div class="why-card reveal">
+            <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M2 12C4.5 7 8 4.5 12 4.5S19.5 7 22 12c-2.5 5-6 7.5-10 7.5S4.5 17 2 12z"/></svg></div>
+            <h3 class="why-h3">Transparency</h3>
+            <p class="why-p">Every pallet accounted for. Verifiable chain-of-custody data — no guesswork, no invented numbers.</p>
+          </div>
+          <div class="why-card reveal" style="transition-delay:0.1s">
+            <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M2 12a10 10 0 1020 0 10 10 0 00-20 0"/><path d="M12 8v4l3 3"/><path d="M18 12l2-2-2-2M6 12l-2 2 2 2"/></svg></div>
+            <h3 class="why-h3">Circular by Design</h3>
+            <p class="why-p">Recover, repair, redeploy, recycle. If a pallet can stay in service, it does — zero waste to landfill.</p>
+          </div>
+          <div class="why-card reveal" style="transition-delay:0.2s">
+            <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 2v2M15 2v2M9 20v2M15 20v2M2 9h2M2 15h2M20 9h2M20 15h2"/></svg></div>
+            <h3 class="why-h3">Technology-First</h3>
+            <p class="why-p">RFID, IoT and a live ledger replace clipboards and lost paperwork with data you can audit.</p>
+          </div>
+          <div class="why-card reveal" style="transition-delay:0.3s">
+            <div class="why-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M8 11l3 3 5-6"/><path d="M12 2L20 5v6c0 5.5-3.5 9.5-8 11C7.5 20.5 4 16.5 4 11V5z"/></svg></div>
+            <h3 class="why-h3">Built as Partners</h3>
+            <p class="why-p">We run the pilot, share the data, and earn the contract. The risk sits with us — not with you.</p>
+          </div>
+        </div>
+
+        <div class="about-cta reveal">
+          <p>Kake Sky is founder-led and built by people who've lived the supply-chain problem first-hand — no legacy baggage, no bloated overheads. Just a focused team proving a better way to keep pallets in circulation.</p>
+          <button class="btn-copper" onclick="goPage('contact')">BOOK A PILOT AUDIT <span class="btn-arrow">→</span></button>
         </div>
       </div>
     </section>
@@ -1292,6 +1370,7 @@
         </div>
         <nav class="footer-nav">
           <a onclick="goPage('home')">Home</a>
+          <a onclick="goPage('about')">About</a>
           <a onclick="goPage('services')">Services</a>
           <a onclick="goPage('coverage')">Coverage</a>
           <a onclick="goPage('contact')">Contact</a>
