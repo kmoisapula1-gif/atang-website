@@ -270,6 +270,30 @@
     .sp-bar-fill { height:100%; width:0; border-radius:4px;
       background:linear-gradient(90deg,var(--copper),var(--copper-light)); transition: width 1.6s cubic-bezier(0.22,1,0.36,1); }
 
+    /* ─── HERO CAPABILITY CARD (replaces fake live stats) ──────────── */
+    .sp-badge {
+      font-family:'IBM Plex Mono',monospace; font-size:0.6rem; letter-spacing:0.08em;
+      color:var(--copper-light); background:rgba(200,112,64,0.14);
+      border:1px solid rgba(200,112,64,0.4); padding:3px 9px; border-radius:20px; white-space:nowrap;
+    }
+    .sp-pillar { display:flex; align-items:flex-start; gap:12px; padding:12px 0; }
+    .sp-pillar + .sp-pillar { border-top:1px solid rgba(255,255,255,0.06); }
+    .sp-check {
+      flex-shrink:0; width:20px; height:20px; border-radius:50%;
+      background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.4);
+      display:flex; align-items:center; justify-content:center;
+      color:#10b981; font-size:0.7rem; font-weight:700; margin-top:1px;
+    }
+    .sp-pillar-title { font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; color:var(--sand); margin-bottom:3px; }
+    .sp-pillar-desc { font-size:0.76rem; line-height:1.5; color:rgba(247,246,242,0.5); }
+    .sp-foot {
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      margin-top:18px; padding-top:16px; border-top:1px solid rgba(255,255,255,0.08);
+      font-family:'IBM Plex Mono',monospace; font-size:0.62rem;
+    }
+    .sp-foot-l { color:rgba(247,246,242,0.4); letter-spacing:0.06em; text-transform:uppercase; }
+    .sp-foot-r { color:var(--copper-light); font-weight:600; white-space:nowrap; }
+
     .scroll-cue {
       position:absolute; left:50%; bottom:26px; transform:translateX(-50%); z-index:2;
       display:flex; flex-direction:column; align-items:center; gap:10px;
@@ -585,7 +609,7 @@
     .slider-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
     .slider-label label { font-family:'IBM Plex Mono',monospace; font-size:0.85rem; font-weight:600; color:var(--charcoal); }
     .slider-label span { font-family:'IBM Plex Mono',monospace; font-size:0.95rem; font-weight:700; color:var(--copper); }
-    input[type="range"] { width:100%; cursor:pointer; }
+    input[type="range"] { width:100%; cursor:pointer; accent-color: var(--copper); }
     .roi-results {
       background:linear-gradient(135deg,var(--forest-dark) 0%,#0f2418 100%);
       border:1px solid var(--border-light);
@@ -648,6 +672,29 @@
       background: var(--copper);
       transform: translateY(-2px);
     }
+
+    /* ─── PILOT AUDIT: badge, guarantees, tech chips, select ───────── */
+    .audit-badge {
+      display:inline-flex; align-items:center; gap:8px; margin-bottom:24px;
+      font-family:'IBM Plex Mono',monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase;
+      color:var(--copper); background:rgba(200,112,64,0.1); border:1px solid rgba(200,112,64,0.3);
+      padding:6px 14px; border-radius:20px;
+    }
+    .audit-badge .dotp { width:7px; height:7px; border-radius:50%; background:var(--copper); animation:pulse 2s infinite; }
+    .audit-bullets { margin-top:32px; padding-top:26px; border-top:1px solid rgba(0,0,0,0.08); display:flex; flex-direction:column; gap:14px; }
+    .audit-bullet { display:flex; align-items:center; gap:12px; font-family:'IBM Plex Mono',monospace; font-size:0.82rem; color:var(--charcoal); }
+    .audit-bullet .ck { flex-shrink:0; width:20px; height:20px; border-radius:50%; background:rgba(16,185,129,0.14);
+      border:1px solid rgba(16,185,129,0.4); color:#10b981; display:flex; align-items:center; justify-content:center; font-size:0.68rem; font-weight:700; }
+    .tech-chips { display:flex; flex-wrap:wrap; gap:8px; }
+    .tech-chip { padding:8px 12px; border-radius:8px; border:1px solid rgba(0,0,0,0.12); background:var(--sand);
+      color:var(--grey); font-family:'IBM Plex Mono',monospace; font-size:0.72rem; cursor:pointer; transition:var(--transition); }
+    .tech-chip:hover { border-color:var(--copper); color:var(--charcoal); }
+    .tech-chip.active { background:rgba(200,112,64,0.12); border-color:var(--copper); color:var(--copper-dark); font-weight:600; }
+    .form-select {
+      width:100%; background:var(--sand); border:1px solid rgba(0,0,0,0.08); padding:14px 16px;
+      font-size:0.96rem; font-family:'Inter',sans-serif; outline:none; transition:var(--transition); border-radius:6px; color:var(--charcoal);
+    }
+    .form-select:focus { border-color:var(--copper); box-shadow:0 0 0 3px rgba(200,112,64,0.1); }
 
     /* ─── FOOTER ────────────────────────────────────────────────── */
     footer {
@@ -775,44 +822,58 @@
         <div class="hero-text">
           <div class="hero-badge">
             <div class="hero-badge-dot"></div>
-            Pallet Lifecycle Management
+            Pilot Program · Now Onboarding
           </div>
           <h1 class="hero-h1">
-            Keeping Industrial<br/>
-            <em>Pallets</em> In Circulation
+            Stop The <em>Drain</em><br/>
+            On Your Wooden Assets
           </h1>
           <p class="hero-sub">
-            From recovery to recycling, Kake Sky Solutions manages every stage of the pallet lifecycle across Southern Africa's industrial heartland.
+            Kake Sky gives enterprise supply chains full visibility, recovery, and circular management for every pallet in circulation — powered by RFID tracking and automated field recovery across Southern Africa.
           </p>
           <div class="hero-actions">
-            <button class="btn-copper" onclick="goPage('services')">OUR SERVICES <span class="btn-arrow">→</span></button>
-            <button class="btn-ghost" onclick="goPage('contact')">GET IN TOUCH <span class="btn-arrow">→</span></button>
+            <button class="btn-copper" onclick="goPage('contact')">BOOK A PILOT AUDIT <span class="btn-arrow">→</span></button>
+            <button class="btn-ghost" onclick="goPage('lifecycle')">SEE OUR PROCESS <span class="btn-arrow">→</span></button>
           </div>
           <div class="hero-trust">
-            Trusted across
-            <b>Cement</b><span class="dot"></span><b>Construction</b><span class="dot"></span><b>Mining</b><span class="dot"></span><b>Manufacturing</b>
+            Built for high-loss industries
+            <b>Cement</b><span class="dot"></span><b>Construction</b><span class="dot"></span><b>Mining</b><span class="dot"></span><b>FMCG</b>
           </div>
         </div>
 
         <div class="status-panel">
           <div class="sp-head">
-            <span class="sp-label">ASSET TRACKING LIVE</span>
-            <div class="sp-dot"></div>
+            <span class="sp-label" style="display:flex;align-items:center;gap:8px">
+              <span class="sp-dot"></span>THE KAKE SKY STANDARD
+            </span>
+            <span class="sp-badge">v1.0 PILOT</span>
           </div>
-          <div class="sp-row">
-            <div class="sp-row-label">Pallets in System</div>
-            <div class="sp-row-val" id="sp-pallets">14,284</div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-row-label">Recovery Rate</div>
-            <div class="sp-row-val copper" id="sp-recovery">94.2%</div>
-            <div class="sp-bar"><div class="sp-bar-fill" id="sp-bar-fill"></div></div>
-          </div>
-          <div class="sp-row">
-            <div class="sp-row-label">Active Route</div>
-            <div class="sp-row-val sm" style="font-size:0.88rem;display:flex;align-items:center;gap:6px;margin:0">
-              GAUTENG → KZN
+
+          <div class="sp-pillar">
+            <span class="sp-check">✓</span>
+            <div>
+              <div class="sp-pillar-title">End-to-End Tracking</div>
+              <div class="sp-pillar-desc">RFID &amp; IoT chain-of-custody visibility across every supply node.</div>
             </div>
+          </div>
+          <div class="sp-pillar">
+            <span class="sp-check">✓</span>
+            <div>
+              <div class="sp-pillar-title">Rapid Field Recovery</div>
+              <div class="sp-pillar-desc">Automated sweeps retrieve stranded pallets from job sites.</div>
+            </div>
+          </div>
+          <div class="sp-pillar">
+            <span class="sp-check">✓</span>
+            <div>
+              <div class="sp-pillar-title">Closed-Loop Refurbishment</div>
+              <div class="sp-pillar-desc">ISO-compliant repairs keep every unit in circulation longer.</div>
+            </div>
+          </div>
+
+          <div class="sp-foot">
+            <span class="sp-foot-l">Now accepting pilot partners</span>
+            <span class="sp-foot-r">Gauteng &amp; KZN Hubs</span>
           </div>
         </div>
       </div>
@@ -833,22 +894,22 @@
               <span style="position:relative;display:inline-flex;border-radius:50%;height:8px;width:8px;background:#10b981"></span>
             </span>
             <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Network:</span>
-            <span style="color:#10b981;font-weight:600">ONLINE</span>
+            <span style="color:#10b981;font-weight:600">PREVIEW</span>
           </div>
           <div class="indicator" style="border-left:1px solid var(--border-light);padding-left:24px">
-            <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Tracked:</span>
-            <span style="color:var(--copper-light);font-weight:600;font-size:0.95rem" id="ticker-assets">14,284</span>
+            <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Launch Zones:</span>
+            <span style="color:var(--copper-light);font-weight:600;font-size:0.95rem">GAUTENG · KZN</span>
           </div>
           <div class="indicator" style="border-left:1px solid var(--border-light);padding-left:24px">
-            <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Recovery:</span>
-            <span style="color:#10b981;font-weight:600;font-size:0.95rem" id="ticker-recovery">94.2%</span>
+            <span style="text-transform:uppercase;letter-spacing:0.08em;color:var(--grey-light)">Pilot:</span>
+            <span style="color:#10b981;font-weight:600;font-size:0.95rem">ONBOARDING</span>
           </div>
         </div>
 
         <div class="ticker-feed">
           <span class="feed-type" id="ticker-type">RECOVER</span>
-          <p class="feed-text" id="ticker-text">Batch #4,210 recovered in Johannesburg Central Depot</p>
-          <span class="feed-time" id="ticker-time">2m ago</span>
+          <p class="feed-text" id="ticker-text">RFID tag assigned the moment a pallet is recovered — custody tracked from that point on.</p>
+          <span class="feed-time" id="ticker-time">STEP 1 / 6</span>
         </div>
       </div>
     </div>
@@ -978,9 +1039,9 @@
     <section id="coverage-page">
       <div class="wrap">
         <div class="page-header reveal">
-          <div class="section-tag" style="justify-content:center;display:flex">Geographic Scale & Logistics Infrastructure</div>
-          <h2 style="font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform:uppercase; margin-bottom: 16px;">Southern Africa Hub Coverage</h2>
-          <p style="color:rgba(255,255,255,0.6);font-size:1.02rem;line-height:1.8;max-width:600px;margin:0 auto">Select a hub to inspect live regional capacities, asset allocations, and turnaround times.</p>
+          <div class="section-tag" style="justify-content:center;display:flex">Phased National Rollout</div>
+          <h2 style="font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform:uppercase; margin-bottom: 16px;">Our Launch Zones</h2>
+          <p style="color:rgba(255,255,255,0.6);font-size:1.02rem;line-height:1.8;max-width:600px;margin:0 auto">We're rolling out hub by hub. Select a zone to see its launch status, target turnaround, and the districts it will serve.</p>
         </div>
 
         <div class="coverage-grid">
@@ -993,12 +1054,12 @@
             </div>
 
             <div class="region-assets">
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Active Pallet Assets</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Launch Status</span>
               <p style="font-size:1.1rem;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--copper-light);margin:0" id="region-assets">6,420 units</p>
             </div>
 
             <div class="region-turnaround">
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Guaranteed Turnaround</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:6px">Target Turnaround</span>
               <p style="font-size:1.1rem;font-weight:600;font-family:'IBM Plex Mono',monospace;color:var(--sand);margin:0" id="region-turnaround">12-24 Hours</p>
             </div>
 
@@ -1022,9 +1083,10 @@
     <section id="roi-page">
       <div class="wrap">
         <div class="page-header reveal">
-          <div class="section-tag" style="justify-content:center;display:flex">Financial Impact Modeler</div>
-          <h2 style="font-size: clamp(2rem,3.5vw,3rem); text-transform:uppercase; margin-bottom: 16px;">Estimate Your Annual ROI</h2>
-          <p style="color:var(--grey);font-size:1.02rem;line-height:1.8;max-width:600px;margin:0 auto">Adjust your metrics to see how much you can save annually with Kake Sky's pallet recovery system.</p>
+          <div class="section-tag" style="justify-content:center;display:flex">Tech-Enabled Savings Modeler</div>
+          <h2 style="font-size: clamp(2rem,3.5vw,3rem); text-transform:uppercase; margin-bottom: 16px;">Calculate Your Pallet Recovery Potential</h2>
+          <p style="color:var(--grey);font-size:1.02rem;line-height:1.8;max-width:620px;margin:0 auto 18px">Estimate what RFID tracking and automated field recovery could return each year — then claim a free, no-obligation audit built on your numbers.</p>
+          <span style="display:inline-flex;align-items:center;gap:8px;font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;color:var(--copper);background:rgba(200,112,64,0.12);border:1px solid rgba(200,112,64,0.35);padding:6px 14px;border-radius:20px">⚡ Powered by Kake Sky IoT Tracking</span>
         </div>
 
         <div class="roi-container reveal">
@@ -1056,8 +1118,9 @@
             </div>
 
             <div class="roi-results">
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:8px">Estimated Annual Savings</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(247,246,242,0.5);display:block;margin-bottom:8px">Projected Annual Capital Saved</span>
               <div class="roi-savings" id="roi-savings-display">R 247,680</div>
+              <p style="font-size:0.72rem;color:rgba(247,246,242,0.45);margin:-14px 0 20px;line-height:1.5">Estimate via automated RFID ledgering &amp; field recovery sweeps — based on industry-average loss rates.</p>
 
               <div class="roi-grid-inner">
                 <div>
@@ -1072,8 +1135,8 @@
             </div>
           </div>
 
-          <button onclick="attachROItoForm()" style="width:100%;margin-top:32px;padding:14px;background:var(--charcoal);color:#fff;font-weight:600;border:none;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;text-transform:uppercase;transition:var(--transition)">
-            Attach ROI Report to Assessment Form →
+          <button onclick="attachROItoForm()" style="width:100%;margin-top:32px;padding:14px;background:var(--copper);color:#fff;font-weight:600;border:none;border-radius:6px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:0.8rem;text-transform:uppercase;transition:var(--transition)">
+            Claim Free Pilot Audit With These Metrics →
           </button>
         </div>
       </div>
@@ -1085,13 +1148,14 @@
     <section id="contact-page">
       <div class="wrap">
         <div class="page-header reveal">
-          <div class="section-tag" style="justify-content:center;display:flex">Get In Touch</div>
-          <h2 style="font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform:uppercase; margin-bottom: 16px;">Let's Talk About Your Pallets</h2>
+          <div class="section-tag" style="justify-content:center;display:flex">Zero-Risk Pilot Audit</div>
+          <h2 style="font-size: clamp(2.2rem,3.5vw,3.2rem); text-transform:uppercase; margin-bottom: 16px;">Stop Guessing Where Your Pallets Go</h2>
         </div>
 
         <div class="contact-grid">
           <div class="reveal">
-            <p class="contact-p">Speak to our operations team about implementing a closed-loop pallet management system for your supply chain.</p>
+            <span class="audit-badge"><span class="dotp"></span>Now Accepting Pilot Partners</span>
+            <p class="contact-p">We're onboarding a limited number of pilot partners across South Africa. Get a 100% free supply-chain audit plus a live demonstration of our IoT &amp; RFID tracking ledger — no obligation, no upfront cost.</p>
 
             <div class="contact-detail">
               <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
@@ -1113,37 +1177,61 @@
               <div class="contact-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
               <div>
                 <div class="contact-detail-label">Inquiries</div>
-                <div class="contact-detail-val">operations@kakesky.co.za</div>
+                <div class="contact-detail-val">pilots@kakesky.co.za</div>
               </div>
+            </div>
+
+            <div class="audit-bullets">
+              <div class="audit-bullet"><span class="ck">✓</span> No initial software or hardware fees</div>
+              <div class="audit-bullet"><span class="ck">✓</span> Full loss report delivered within 5 business days</div>
+              <div class="audit-bullet"><span class="ck">✓</span> Compatible with existing ERP / WMS software</div>
             </div>
           </div>
 
-          <div class="contact-form reveal" style="transition-delay:0.2s">
-            <h3 class="form-h3">Quick Assessment</h3>
+          <div class="contact-form reveal" id="pilot-audit-form" style="transition-delay:0.2s">
+            <h3 class="form-h3">Apply for a Free Pallet Loss Audit</h3>
+            <p style="color:var(--grey);font-size:0.9rem;margin:-18px 0 26px;line-height:1.6">Give us your details and we'll schedule a site scan and live tech preview.</p>
             <form onsubmit="handleSubmit(event)">
               <div class="form-row">
                 <div>
-                  <div class="form-label">First Name</div>
-                  <input type="text" class="form-input" placeholder="John" />
+                  <div class="form-label">Full Name</div>
+                  <input type="text" class="form-input" placeholder="Sarah Jenkins" />
                 </div>
                 <div>
-                  <div class="form-label">Last Name</div>
-                  <input type="text" class="form-input" placeholder="Smith" />
+                  <div class="form-label">Work Email</div>
+                  <input type="email" class="form-input" placeholder="sarah@company.co.za" />
+                </div>
+              </div>
+              <div class="form-row">
+                <div>
+                  <div class="form-label">Company / Industry</div>
+                  <input type="text" class="form-input" placeholder="Construction / FMCG" />
+                </div>
+                <div>
+                  <div class="form-label">Primary Region</div>
+                  <select class="form-select">
+                    <option>Gauteng Hub</option>
+                    <option>KwaZulu-Natal Corridor</option>
+                    <option>Western Cape Hub</option>
+                    <option>Mpumalanga Mining Belt</option>
+                    <option>Other / Nationwide</option>
+                  </select>
                 </div>
               </div>
               <div class="form-group">
-                <div class="form-label">Company / Industry</div>
-                <input type="text" class="form-input" placeholder="Acme Manufacturing" />
+                <div class="form-label">Technologies You Want to Pilot</div>
+                <div class="tech-chips">
+                  <button type="button" class="tech-chip active" onclick="toggleChip(this)">RFID / Barcode Tagging</button>
+                  <button type="button" class="tech-chip" onclick="toggleChip(this)">IoT Beacon Tracking</button>
+                  <button type="button" class="tech-chip" onclick="toggleChip(this)">Automated Site Sweeps</button>
+                  <button type="button" class="tech-chip" onclick="toggleChip(this)">Closed-Loop Refurbishment</button>
+                </div>
               </div>
               <div class="form-group">
-                <div class="form-label">Email Address</div>
-                <input type="email" class="form-input" placeholder="john@company.co.za" />
+                <div class="form-label">Audit Focus / Additional Notes</div>
+                <textarea class="form-textarea" id="contact-message-input" placeholder="How many pallets do you circulate annually, and where are your key loss areas?"></textarea>
               </div>
-              <div class="form-group">
-                <div class="form-label">Message / Pallet Volume</div>
-                <textarea class="form-textarea" id="contact-message-input" placeholder="Tell us about your pallet operations..."></textarea>
-              </div>
-              <button type="submit" class="form-btn">SUBMIT INQUIRY</button>
+              <button type="submit" class="form-btn">REQUEST FREE TECH AUDIT &amp; PILOT ACCESS</button>
             </form>
           </div>
         </div>
@@ -1173,7 +1261,7 @@
       </div>
 
       <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);padding:16px;border-radius:8px;margin-bottom:32px">
-        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:rgba(16,185,129,0.8);display:block;margin-bottom:6px">Operational Output</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:rgba(16,185,129,0.8);display:block;margin-bottom:6px">Capability Guarantee</span>
         <p style="font-size:0.95rem;font-weight:600;color:#10b981;margin:0" id="modal-srv-output">Output metric</p>
       </div>
 
@@ -1253,31 +1341,23 @@
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
     // ═══ LIVE TICKER DATA ══════════════════════════════════════════
+    // Platform preview — how the Kake Sky loop works (not live client data)
     const liveEvents = [
-      { id: 'EV-8921', text: 'Batch #4,210 recovered in Johannesburg Central Depot', time: '2m ago', type: 'RECOVER' },
-      { id: 'EV-8922', text: '180 Heavy Duty Units dispatched to Durban Hub', time: '5m ago', type: 'REDEPLOY' },
-      { id: 'EV-8923', text: 'Structural load test passed: 320 repaired units (Cape Town)', time: '8m ago', type: 'REPAIR' },
-      { id: 'EV-8924', text: 'RFID Sync completed: 1,450 units registered in Mpumalanga', time: '12m ago', type: 'TRACK' },
-      { id: 'EV-8925', text: '56 new manufactured pallets deployed to Gauteng network', time: '15m ago', type: 'MANUFACTURE' },
-      { id: 'EV-8926', text: '2,340 units recycled into biomass energy feedstock', time: '18m ago', type: 'RECYCLE' },
+      { text: 'RFID tag assigned the moment a pallet is recovered — custody tracked from that point on.', step: 'STEP 1 / 6', type: 'RECOVER' },
+      { text: 'Automated defect detection routes damaged units to ISO-compliant structural repair.', step: 'STEP 2 / 6', type: 'REPAIR' },
+      { text: 'IoT ledger maintains a real-time, audit-ready chain of custody for every asset.', step: 'STEP 3 / 6', type: 'TRACK' },
+      { text: 'Dispatch algorithms route available units to the nearest regional demand hub.', step: 'STEP 4 / 6', type: 'REDEPLOY' },
+      { text: 'Sustainable timber sourcing builds extended-lifecycle replacement pallets on demand.', step: 'STEP 5 / 6', type: 'MANUFACTURE' },
+      { text: 'End-of-life timber is recovered as biomass and mulch — zero waste to landfill.', step: 'STEP 6 / 6', type: 'RECYCLE' },
     ];
 
     let tickerIndex = 0;
-    let assetCount = 14284;
-    let recoveryRate = 94.2;
 
     function updateTicker() {
       const event = liveEvents[tickerIndex];
       document.getElementById('ticker-type').textContent = event.type;
       document.getElementById('ticker-text').textContent = event.text;
-      document.getElementById('ticker-time').textContent = event.time;
-
-      assetCount += Math.floor(Math.random() * 5) + 1;
-      document.getElementById('ticker-assets').textContent = assetCount.toLocaleString();
-
-      recoveryRate = Math.min(99.9, recoveryRate + (Math.random() * 0.3));
-      document.getElementById('ticker-recovery').textContent = recoveryRate.toFixed(1) + '%';
-
+      document.getElementById('ticker-time').textContent = event.step;
       tickerIndex = (tickerIndex + 1) % liveEvents.length;
     }
 
@@ -1328,12 +1408,12 @@
 
     // ═══ SERVICE DATA ══════════════════════════════════════════════
     const servicesData = [
-      { id: 'SRV-01', title: 'Asset Recovery & Retrieval', location: 'Nationwide Depots', status: 'ACTIVE', summary: 'Automated location sweeps to retrieve misplaced or stranded pallets.', sla: '48-hour turnaround from ping identification', details: ['Dedicated field sweep teams with direct site access permissions.', 'Digital proof-of-recovery capture with timestamped photo verification.', 'Integration with contractor check-in/check-out logs.'], output: '14,280+ units YTD' },
-      { id: 'SRV-02', title: 'Automated Repair & Testing', location: 'Gauteng & Cape Town Hubs', status: 'OPERATIONAL', summary: 'Robotic sorting, board replacement, and load-stress testing.', sla: 'ISO 8611 Load Compliance Guarantee', details: ['Pneumatic nail extraction and automated runner replacing.', 'Ultrasonic timber density inspection to prevent field collapsing.', 'Heat treatment (ISPM 15) compliance for export readiness.'], output: '8,400+ refurbished/mo' },
-      { id: 'SRV-03', title: 'Reverse Logistics Network', location: 'Regional Distribution Centers', status: 'OPTIMIZED', summary: 'Dynamic dispatch algorithms route available units to nearest demand hubs.', sla: 'Same-day collection & next-day delivery', details: ['Real-time routing optimization using machine learning.', 'Consolidated regional hubs reduce transport emissions by 35%.', 'Multi-modal transport (road, rail, sea) scheduling.'], output: '450+ weekly pickups' },
-      { id: 'SRV-04', title: 'RFID Tracking & Traceability', location: 'Network-wide Ledger', status: 'LIVE', summary: 'RFID & IoT ledger synchronization for full chain-of-custody visibility.', sla: '100% Audit Readiness & Real-time Updates', details: ['RFID tag embedding at recovery stage for permanent tracking.', 'Blockchain-backed ledger entry for immutable custody records.', 'API integration with customer inventory management systems.'], output: '24/7 visibility' },
-      { id: 'SRV-05', title: 'Pallet Manufacturing', location: 'ZA Eastern Cape Mill', status: 'SCHEDULED', summary: 'Sustainable timber sourcing and precision modular construction.', sla: 'Custom specifications with 4-week lead time', details: ['FSC-certified timber sourcing with zero waste policy.', 'Precision CNC cutting and automated assembly.', 'Heavy-duty spec (2000+ kg load) for industrial applications.'], output: '+3 year extended lifespan' },
-      { id: 'SRV-06', title: 'Recycling & Material Recovery', location: 'Regional Collection Centers', status: 'ON-DEMAND', summary: 'Zero-waste grinding and conversion into secondary raw materials.', sla: 'Scheduled batch cycles with flexible frequency', details: ['Timber chip production for biomass energy applications.', 'Mulch & compost production for agricultural markets.', '100% landfill diversion with material traceability reports.'], output: '100% resource recovery' }
+      { id: 'SRV-01', title: 'Asset Recovery & Retrieval', location: 'Gauteng & KZN (Pilot)', status: 'READY', summary: 'Automated location sweeps to retrieve misplaced or stranded pallets.', sla: '48-hour turnaround from ping identification', details: ['Dedicated field sweep teams with direct site access permissions.', 'Digital proof-of-recovery capture with timestamped photo verification.', 'Integration with contractor check-in/check-out logs.'], output: 'Target: 48-hr recovery SLA' },
+      { id: 'SRV-02', title: 'Automated Repair & Testing', location: 'Gauteng Hub (Pilot)', status: 'READY', summary: 'Robotic sorting, board replacement, and load-stress testing.', sla: 'ISO 8611 Load Compliance Guarantee', details: ['Pneumatic nail extraction and automated runner replacing.', 'Ultrasonic timber density inspection to prevent field collapsing.', 'Heat treatment (ISPM 15) compliance for export readiness.'], output: 'ISO 8611 load-tested' },
+      { id: 'SRV-03', title: 'Reverse Logistics Network', location: 'Gauteng–KZN Corridor', status: 'READY', summary: 'Dynamic dispatch algorithms route available units to nearest demand hubs.', sla: 'Same-day collection & next-day delivery', details: ['Real-time routing optimization using machine learning.', 'Consolidated regional hubs reduce transport emissions by 35%.', 'Multi-modal transport (road, rail, sea) scheduling.'], output: 'Same-day dispatch routing' },
+      { id: 'SRV-04', title: 'RFID Tracking & Traceability', location: 'Cloud Ledger', status: 'LIVE', summary: 'RFID & IoT ledger synchronization for full chain-of-custody visibility.', sla: '100% Audit Readiness & Real-time Updates', details: ['RFID tag embedding at recovery stage for permanent tracking.', 'Ledger entry for immutable custody records.', 'API integration with customer inventory management systems.'], output: '24/7 chain-of-custody' },
+      { id: 'SRV-05', title: 'Pallet Manufacturing', location: 'Partner Mill Network', status: 'ROADMAP', summary: 'Sustainable timber sourcing and precision modular construction.', sla: 'Custom specifications with 4-week lead time', details: ['FSC-certified timber sourcing with zero waste policy.', 'Precision CNC cutting and automated assembly.', 'Heavy-duty spec (2000+ kg load) for industrial applications.'], output: '+3 year design lifespan' },
+      { id: 'SRV-06', title: 'Recycling & Material Recovery', location: 'Gauteng & KZN (Pilot)', status: 'ON-DEMAND', summary: 'Zero-waste grinding and conversion into secondary raw materials.', sla: 'Scheduled batch cycles with flexible frequency', details: ['Timber chip production for biomass energy applications.', 'Mulch & compost production for agricultural markets.', '100% landfill diversion with material traceability reports.'], output: '100% landfill diversion' }
     ];
 
     const svcGrid = document.getElementById('svc-grid');
@@ -1387,10 +1467,10 @@
 
     // ═══ REGIONAL COVERAGE DATA ════════════════════════════════════
     const regionsData = [
-      { id: 'gauteng', name: 'Gauteng Primary Hub', location: 'Johannesburg / Pretoria', assets: '6,420 units', turnaround: '12 - 24 Hours', capacity: '88% Capacity', facility: 'Gauteng Central Logistics Base', coverage: ['Ekurhuleni', 'Midrand', 'Vanderbijlpark', 'Pretoria Industrial'], status: 'PRIMARY HUB' },
-      { id: 'kzn', name: 'KwaZulu-Natal Port Hub', location: 'Durban / Pinetown', assets: '3,850 units', turnaround: '24 Hours', capacity: '74% Capacity', facility: 'Durban Harbor & Distribution Depot', coverage: ['Durban South', 'Pinetown Logistics Park', 'Pietermaritzburg'], status: 'PORT DISPATCH' },
-      { id: 'cape', name: 'Western Cape Hub', location: 'Cape Town / Winelands', assets: '2,610 units', turnaround: '24 - 48 Hours', capacity: '65% Capacity', facility: 'Montague Gardens Regional Yard', coverage: ['Cape Town Harbor', 'Paarl Industrial', 'Stellenbosch Distribution'], status: 'ACTIVE REGION' },
-      { id: 'mpumalanga', name: 'Mpumalanga Mining Corridor', location: 'eMalahleni / Mbombela', assets: '1,404 units', turnaround: '48 Hours', capacity: '82% Capacity', facility: 'Highveld Resource Depot', coverage: ['eMalahleni Mining Belt', 'Secunda Heavy Sector', 'Nelspruit Logistics'], status: 'MINING DEPOT' }
+      { id: 'gauteng', name: 'Gauteng Primary Hub', location: 'Johannesburg / Pretoria', assets: 'Onboarding now', turnaround: '12 - 24 Hours (target)', capacity: 'Phase 1 · Live', facility: 'Gauteng Central Logistics Base', coverage: ['Ekurhuleni', 'Midrand', 'Vanderbijlpark', 'Pretoria Industrial'], status: 'PILOT LIVE' },
+      { id: 'kzn', name: 'KwaZulu-Natal Port Hub', location: 'Durban / Pinetown', assets: 'Pilot intake open', turnaround: '24 Hours (target)', capacity: 'Phase 1 · Live', facility: 'Durban Harbor & Distribution Depot', coverage: ['Durban South', 'Pinetown Logistics Park', 'Pietermaritzburg'], status: 'LAUNCHING' },
+      { id: 'cape', name: 'Western Cape Hub', location: 'Cape Town / Winelands', assets: 'Planned 2026', turnaround: 'To be confirmed', capacity: 'Phase 2 · Planned', facility: 'Montague Gardens Regional Yard', coverage: ['Cape Town Harbor', 'Paarl Industrial', 'Stellenbosch Distribution'], status: 'PHASE 2' },
+      { id: 'mpumalanga', name: 'Mpumalanga Mining Corridor', location: 'eMalahleni / Mbombela', assets: 'Planned 2026', turnaround: 'To be confirmed', capacity: 'Phase 2 · Planned', facility: 'Highveld Resource Depot', coverage: ['eMalahleni Mining Belt', 'Secunda Heavy Sector', 'Nelspruit Logistics'], status: 'PHASE 2' }
     ];
 
     const hubsContainer = document.getElementById('regional-hubs');
@@ -1453,10 +1533,11 @@
       const cost = parseInt(roiCost.value);
       const lossRate = parseInt(roiLoss.value);
 
+      // RFID/IoT tracking + field sweeps typically eliminate ~75% of untracked loss
       const totalSpend = pallets * cost;
       const currentLossCost = totalSpend * (lossRate / 100);
-      const estimatedSavings = currentLossCost * 0.78;
-      const co2Offset = ((pallets * (lossRate / 100) * 0.78) * 12) / 1000;
+      const estimatedSavings = currentLossCost * 0.75;
+      const co2Offset = ((pallets * (lossRate / 100) * 0.75) * 12) / 1000;
 
       document.getElementById('roi-pallets-display').textContent = pallets.toLocaleString();
       document.getElementById('roi-cost-display').textContent = `R ${cost}`;
@@ -1475,48 +1556,22 @@
       const savings = document.getElementById('roi-savings-display').textContent;
       const pallets = document.getElementById('roi-pallets-display').textContent;
       const lossRate = document.getElementById('roi-loss-display').textContent;
-      const msg = `Hi Kake Sky team, based on my calculations (Annual volume: ${pallets} pallets, Loss rate: ${lossRate}), we estimate potential savings of ${savings}. Let's discuss an audit.`;
+      const msg = `I'd like to request a Free Pallet Loss Audit. Current circulation: ~${pallets} pallets/yr with an estimated loss rate of ${lossRate}. Projected recovery: ${savings}/yr.`;
       document.getElementById('contact-message-input').value = msg;
       goPage('contact');
+    }
+
+    function toggleChip(el) {
+      el.classList.toggle('active');
     }
 
     function handleSubmit(e) {
       e.preventDefault();
       const btn = e.target.querySelector('.form-btn');
-      btn.textContent = 'SUBMITTED — THANK YOU!';
+      btn.textContent = 'AUDIT REQUESTED — WE’LL BE IN TOUCH';
       btn.style.background = 'var(--forest-mid)';
       btn.disabled = true;
     }
-
-    // ═══ HERO STAT COUNT-UP + RECOVERY BAR ════════════════════════
-    (function heroStats() {
-      const palletsEl = document.getElementById('sp-pallets');
-      const recovEl = document.getElementById('sp-recovery');
-      const barEl = document.getElementById('sp-bar-fill');
-      if (!palletsEl || !recovEl || !barEl) return;
-      const palletsTarget = 14284, recovTarget = 94.2;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduce) {
-        palletsEl.textContent = palletsTarget.toLocaleString();
-        recovEl.textContent = recovTarget.toFixed(1) + '%';
-        barEl.style.width = recovTarget + '%';
-        return;
-      }
-      palletsEl.textContent = '0';
-      recovEl.textContent = '0.0%';
-      const dur = 1600;
-      const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
-      setTimeout(() => {
-        barEl.style.width = recovTarget + '%';
-        const start = performance.now();
-        (function tick(now) {
-          const p = Math.min(1, (now - start) / dur), e = easeOutCubic(p);
-          palletsEl.textContent = Math.round(palletsTarget * e).toLocaleString();
-          recovEl.textContent = (recovTarget * e).toFixed(1) + '%';
-          if (p < 1) requestAnimationFrame(tick);
-        })(start);
-      }, 750); // sync with the panel's entrance
-    })();
 
     // ═══ 3D HERO PALLET — raw WebGL, no external libraries ═════════
     // Real GPU lighting (matches the design's Three.js material/lights)
